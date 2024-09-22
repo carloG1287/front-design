@@ -44,12 +44,9 @@ class TopBar extends Component {
           <CompanyName message="Feldspar" />
         </div>
         <div className="horizontal-flex">
-          {!store.getLoggedIn && (
-            <TopBarButton message="Login" clickFunc={this.handleLoginShow} />
-          )}
           {store.getLoggedIn && (
             <div className="horizontal-flex">
-              <NameDisplay username={store.getUsername} />
+              <NameDisplay username={store.username} />
               <TopBarButton
                 message="Logout"
                 clickFunc={this.handleLogoutShow}

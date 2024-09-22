@@ -3,10 +3,11 @@ import {
   action,
   computed
 } from "mobx";
+import { parseJwt } from "./Utils/Utils";
 
 class LuminescenceStore {
-  @observable loggedIn = false;
-  @observable username = "";
+  @observable loggedIn = parseJwt(localStorage.getItem('token'))?.username ? true : false;
+  @observable username = parseJwt(localStorage.getItem('token'))?.username || '';
   @observable accessToken = "";
   @observable refreshToken = "";
   @observable loginModal = false;

@@ -863,23 +863,27 @@ class BlueprintPage extends Component {
           {/* Main Navigation */}
           <div>
             <ul className="nav nav-sidebar vertical-container">
-              <li id="floorplan_tab">
-                <OverlayTrigger
-                  placement="right"
-                  overlay={<Tooltip>Edit Floorplan</Tooltip>}
-                >
-                  <div>
-                    <FaPencilRuler />
-                  </div>
-                </OverlayTrigger>
-              </li>
               <li id="design_tab">
                 <OverlayTrigger
                   placement="right"
                   overlay={<Tooltip>Design</Tooltip>}
                 >
-                  <div>
-                    <FaDraftingCompass />
+                  <div className="icons">
+                    <div className="iconWrapper">
+                      <FaDraftingCompass />
+                    </div>
+                  </div>
+                </OverlayTrigger>
+              </li>
+              <li id="floorplan_tab">
+                <OverlayTrigger
+                  placement="right"
+                  overlay={<Tooltip>Edit Floorplan</Tooltip>}
+                >
+                  <div className="icons">
+                    <div className="iconWrapper">
+                      <FaPencilRuler />
+                    </div>
                   </div>
                 </OverlayTrigger>
               </li>
@@ -888,8 +892,10 @@ class BlueprintPage extends Component {
                   placement="right"
                   overlay={<Tooltip>Add Items</Tooltip>}
                 >
-                  <div>
-                    <FaPlus />
+                  <div className="icons">
+                    <div className="iconWrapper">
+                      <FaPlus />
+                    </div>
                   </div>
                 </OverlayTrigger>
               </li>
@@ -902,8 +908,10 @@ class BlueprintPage extends Component {
                   placement="right"
                   overlay={<Tooltip>New Plan</Tooltip>}
                 >
-                  <div id="new">
-                    <FaRedo />
+                  <div className="icons" id='new'>
+                    <div className="iconWrapper">
+                      <FaRedo />
+                    </div>
                   </div>
                 </OverlayTrigger>
               </li>
@@ -913,8 +921,10 @@ class BlueprintPage extends Component {
                     placement="right"
                     overlay={<Tooltip>Save</Tooltip>}
                   >
-                    <div>
-                      <SaveButton />
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <SaveButton />
+                      </div>
                     </div>
                   </OverlayTrigger>
                 </li>
@@ -925,8 +935,10 @@ class BlueprintPage extends Component {
                     placement="right"
                     overlay={<Tooltip>Load</Tooltip>}
                   >
-                    <div>
-                      <LoadButton />
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <LoadButton />
+                      </div>
                     </div>
                   </OverlayTrigger>
                 </li>

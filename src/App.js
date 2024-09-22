@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Homepage from "./Components/Homepage.jsx";
 import { inject, observer } from "mobx-react";
+import AuthRoute from "./Components/AuthRoute/AuthRoute.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Login from "./Components/Login.jsx";
 
 @inject("store")
 @observer
@@ -14,11 +16,10 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/about"></Route>
           <Route path="/view/:viewKey" component={Homepage} />
-          <Route path="/">
-            <Homepage />
-          </Route>
+          <Route path="/login" component={Login} />
+          <AuthRoute path="/" component={<Homepage />} />
+          <AuthRoute path="*" component={<Homepage />} />
         </Switch>
       </Router>
     );
