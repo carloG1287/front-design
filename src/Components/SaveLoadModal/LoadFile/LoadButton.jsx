@@ -14,7 +14,7 @@ class LoadButton extends Component {
 
   handleLoadFileShow(e) {
     e.preventDefault();
-    this.props.store.setLoadFileModal(true);
+    this.props.store.cambiarModuloCargarArchivo(true);
   }
 
   render() {

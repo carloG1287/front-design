@@ -21,18 +21,18 @@ class LogoutBody extends Component {
     e.preventDefault();
 
     this.setState({ isDisabled: true });
-    
+
     this.setState({
       isError: false,
       isDisabled: true,
     });
 
-    this.props.store.setUsername("");
-    this.props.store.setAccessToken("");
-    this.props.store.setRefreshToken("");
-    this.props.store.setLoggedIn(false);
+    this.props.store.cambiarNombreDeUsuario("");
+    this.props.store.cambiarTokenDeAcceso("");
+    this.props.store.cambiarTokenDeSesion("");
+    this.props.store.cambiarInicioDeSesion(false);
 
-    this.props.store.setLogoutModal(false);
+    this.props.store.cambiarModuloLogout(false);
 
     return window.location.pathname = '/login'
   }

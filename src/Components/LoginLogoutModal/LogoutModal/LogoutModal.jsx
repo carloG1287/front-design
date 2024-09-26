@@ -6,14 +6,14 @@ import LogoutBody from "./LogoutBody.jsx";
 
 @inject("store")
 @observer
-class LoginModal extends Component {
+class moduloLogin extends Component {
   constructor(props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
   }
 
   handleClose() {
-    this.props.store.setLogoutModal(false);
+    this.props.store.cambiarModuloLogout(false);
   }
 
   render() {
@@ -23,9 +23,9 @@ class LoginModal extends Component {
         size="sm"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={store.showLogoutModal}
+        show={store.mostrarModuloLogout}
         onHide={() => this.handleClose()}
-        id="logoutModal"
+        id="moduloLogout"
       >
         <Modal.Body>
           <div className="modal-plain-text">Confirm Log out?</div>
@@ -36,4 +36,4 @@ class LoginModal extends Component {
   }
 }
 
-export default LoginModal;
+export default moduloLogin;

@@ -15,13 +15,13 @@ class CardList extends Component {
       .hover(function (e) {
         $(".item-card-title").removeClass("active-title");
         $(this).find(".item-card-title").addClass("active-title");
-        
+
       })
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
     if (this.props.itemList !== prevProps.itemList) {
-      this.props.store.setClickListener(true);
+      this.props.store.cambiarManejadorDeClick(true);
     }
   }
   render() {
@@ -33,7 +33,7 @@ class CardList extends Component {
             model-type={item.type}
             model-name={item.name}
             onClick={() => {
-              this.props.store.setClickListener(true);
+              this.props.store.cambiarManejadorDeClick(true);
             }}
             key={iterator}
             className="bg-dark text-white item-card add-item"

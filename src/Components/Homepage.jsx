@@ -19,13 +19,13 @@ class Homepage extends Component {
         {this.props.match && (
           <BluePrintPage
             viewKey={this.props.match.params.viewKey}
-            addClickListener={store.getClickListener}
+            añadirManejadorDeClick={store.obtenerManejadorDeClick}
           />
         )}
         {!this.props.match && (
           <BluePrintPage
             viewKey=""
-            addClickListener={store.getClickListener}
+            añadirManejadorDeClick={store.obtenerManejadorDeClick}
           />
         )}
         <ComingSoonPage />

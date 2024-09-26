@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
 import { FaQuestionCircle } from "react-icons/fa";
-import LoginModal from "../LoginLogoutModal/LoginModal/LoginModal.jsx";
-import LogoutModal from "../LoginLogoutModal/LogoutModal/LogoutModal.jsx";
+import ModuloLogin from "../LoginLogoutModal/LoginModal/LoginModal";
+import ModuloLogout from "../LoginLogoutModal/LogoutModal/LogoutModal";
 import NameDisplay from "./NameDisplay.jsx";
 import CompanyName from "./CompanyName.jsx";
 import TopBarButton from "./TopBarButton.jsx";
-import InfoModal from "./InfoModal.jsx";
+import ModuloInformacion from "./InfoModal";
 
 @inject("store")
 @observer
@@ -22,17 +22,17 @@ class TopBar extends Component {
 
   handleLoginShow(e) {
     e.preventDefault();
-    this.props.store.setLoginModal(true);
+    this.props.store.cambiarModuloLogin(true);
   }
 
   handleLogoutShow(e) {
     e.preventDefault();
-    this.props.store.setLogoutModal(true);
+    this.props.store.cambiarModuloLogout(true);
   }
 
   handleInfoShow(e) {
     e.preventDefault();
-    this.props.store.setInfoModal(true);
+    this.props.store.cambiarModuloInformacion(true);
   }
 
   render() {
@@ -40,13 +40,13 @@ class TopBar extends Component {
     return (
       <div className="top-bar">
         <div className="horizontal-flex">
-          <img src="./logo-no-moon.svg" className="top-bar-logo" alt=""/>
+          <img src="./logo-no-moon.svg" className="top-bar-logo" alt="" />
           <CompanyName message="Feldspar" />
         </div>
         <div className="horizontal-flex">
-          {store.getLoggedIn && (
+          {store.obtenerInicioDeSesion && (
             <div className="horizontal-flex">
-              <NameDisplay username={store.username} />
+              <NameDisplay nombreDeUsuario={store.nombreDeUsuario} />
               <TopBarButton
                 message="Logout"
                 clickFunc={this.handleLogoutShow}
@@ -62,9 +62,9 @@ class TopBar extends Component {
           </Button>
         </div>
 
-        <LoginModal />
-        <LogoutModal />
-        <InfoModal />
+        <ModuloLogin />
+        <ModuloLogout />
+        <ModuloInformacion />
       </div>
     );
   }

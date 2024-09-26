@@ -6,14 +6,14 @@ import Modal from "react-bootstrap/Modal";
 
 @inject("store")
 @observer
-class LoginModal extends Component {
+class moduloLogin extends Component {
   constructor(props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
   }
 
   handleClose() {
-    this.props.store.setInfoModal(false);
+    this.props.store.cambiarModuloInformacion(false);
   }
 
   render() {
@@ -22,9 +22,9 @@ class LoginModal extends Component {
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={store.showInfoModal}
+        show={store.verModuloInformacion}
         onHide={() => this.handleClose()}
-        id="infoModal"
+        id="moduloInformacion"
       >
         <Modal.Body>
           <div className="login-form-space">
@@ -52,4 +52,4 @@ class LoginModal extends Component {
   }
 }
 
-export default LoginModal;
+export default moduloLogin;

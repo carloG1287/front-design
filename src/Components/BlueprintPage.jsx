@@ -49,7 +49,7 @@ class BlueprintPage extends Component {
     this.state = {
       key: "sofa",
       blueprint3d: {},
-      addClickListener: false,
+      añadirManejadorDeClick: false,
       currentStateName: "Design",
       blob: "",
     };
@@ -844,13 +844,13 @@ class BlueprintPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.addClickListener) {
-      // this.setState({ addClickListener: true });
-      this.props.store.setClickListener(false);
+    if (this.props.añadirManejadorDeClick) {
+      // this.setState({ añadirManejadorDeClick: true });
+      this.props.store.cambiarManejadorDeClick(false);
       this.initItems(this.state.blueprint3d, this.setDesignState);
     }
-    if (this.props.addClickListener === false && prevProps.addClickListener) {
-      this.setState({ addClickListener: false });
+    if (this.props.añadirManejadorDeClick === false && prevProps.añadirManejadorDeClick) {
+      this.setState({ añadirManejadorDeClick: false });
     }
   }
 
@@ -915,7 +915,7 @@ class BlueprintPage extends Component {
                   </div>
                 </OverlayTrigger>
               </li>
-              {store.getLoggedIn && (
+              {store.obtenerInicioDeSesion && (
                 <li>
                   <OverlayTrigger
                     placement="right"
@@ -929,7 +929,7 @@ class BlueprintPage extends Component {
                   </OverlayTrigger>
                 </li>
               )}
-              {store.getLoggedIn && (
+              {store.obtenerInicioDeSesion && (
                 <li>
                   <OverlayTrigger
                     placement="right"
@@ -956,12 +956,12 @@ class BlueprintPage extends Component {
           </div>
           {/* Floor Textures */}
           <div id="floorTexturesDiv" style={{ display: "none" }}>
-            <FloorTextureList loggedIn={store.getLoggedIn} />
+            <FloorTextureList usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
           </div>
 
           {/* Wall Textures */}
           <div id="wallTextures" style={{ display: "none" }}>
-            <WallTextureList loggedIn={store.getLoggedIn} />
+            <WallTextureList usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
           </div>
         </div>
         {/* End Left Column */}
@@ -1102,25 +1102,25 @@ class BlueprintPage extends Component {
               }}
             >
               <Tab eventKey="sofa" title="Sofas">
-                <CardListSofa loggedIn={store.getLoggedIn} />
+                <CardListSofa usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="chair" title="Chairs">
-                <CardListChair loggedIn={store.getLoggedIn} />
+                <CardListChair usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="rug" title="Rugs">
-                <CardListRug loggedIn={store.getLoggedIn} />
+                <CardListRug usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="misc" title="Misc">
-                <CardListMisc loggedIn={store.getLoggedIn} />
+                <CardListMisc usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="light" title="Lights">
-                <CardListLight loggedIn={store.getLoggedIn} />
+                <CardListLight usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="kitchen" title="Kitchen">
-                <CardListKitchen loggedIn={store.getLoggedIn} />
+                <CardListKitchen usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="arch" title="Architectural">
-                <CardListArch loggedIn={store.getLoggedIn} />
+                <CardListArch usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
             </Tabs>
           </div>

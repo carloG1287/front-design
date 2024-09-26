@@ -1,113 +1,111 @@
-import {
-  observable,
-  action,
-  computed
-} from "mobx";
+import { observable, action, computed } from "mobx";
 import { parseJwt } from "./Utils/Utils";
 
 class LuminescenceStore {
-  @observable loggedIn = parseJwt(localStorage.getItem('token'))?.username ? true : false;
-  @observable username = parseJwt(localStorage.getItem('token'))?.username || '';
-  @observable accessToken = "";
-  @observable refreshToken = "";
-  @observable loginModal = false;
-  @observable logoutModal = false;
-  @observable infoModal = false;
-  @observable addClickListener = false;
-  @observable saveFileModal = false;
-  @observable loadFileModal = false;
+  @observable usuarioHaIniciadoSesion = parseJwt(localStorage.getItem("token"))
+    ?.username
+    ? true
+    : false;
+  @observable nombreDeUsuario =
+    parseJwt(localStorage.getItem("token"))?.username || "";
+  @observable tokenDeAcceso = "";
+  @observable tokenDeSesion = "";
+  @observable moduloLogin = false;
+  @observable moduloLogout = false;
+  @observable moduloInformacion = false;
+  @observable añadirManejadorDeClick = false;
+  @observable moduloGuardarArchivo = false;
+  @observable moduloCargarArchivo = false;
 
+  //usuarioHaIniciadoSesion---------------------------------------------
+  @action cambiarInicioDeSesion = (login) => {
+    this.usuarioHaIniciadoSesion = login;
+  };
 
-  //LoggedIn---------------------------------------------
-  @action setLoggedIn = (login) => {
-    this.loggedIn = login
+  @computed get obtenerInicioDeSesion() {
+    return this.usuarioHaIniciadoSesion;
   }
 
-  @computed get getLoggedIn() {
-    return this.loggedIn
+  //nombreDeUsuario--------------------------------------------
+  @action cambiarNombreDeUsuario = (name) => {
+    this.nombreDeUsuario = name;
+  };
+
+  @computed get obtenerNombreDeUsuario() {
+    return this.nombreDeUsuario;
   }
 
-  //Username--------------------------------------------
-  @action setUsername = (name) => {
-    this.username = name
+  //tokenDeAcceso--------------------------------------------
+  @action cambiarTokenDeAcceso = (tokenDeAcceso) => {
+    this.tokenDeAcceso = tokenDeAcceso;
+  };
+
+  @computed get obtenerTokenDeAcceso() {
+    return this.tokenDeAcceso;
   }
 
-  @computed get getUsername() {
-    return this.username
+  //tokenDeSesion--------------------------------------------
+  @action cambiarTokenDeSesion = (token) => {
+    this.tokenDeSesion = token;
+  };
+
+  @computed get obtenerTokenDeSesion() {
+    return this.tokenDeSesion;
   }
 
-  //AccessToken--------------------------------------------
-  @action setAccessToken = (accessToken) => {
-    this.accessToken = accessToken
+  //moduloLogin---------------------------------------------
+  @action cambiarModuloLogin = (show) => {
+    this.moduloLogin = show;
+  };
+
+  @computed get mostrarModuloLogin() {
+    return this.moduloLogin;
   }
 
-  @computed get getAccessToken() {
-    return this.accessToken
+  //moduloLogout---------------------------------------------
+  @action cambiarModuloLogout = (show) => {
+    this.moduloLogout = show;
+  };
+
+  @computed get mostrarModuloLogout() {
+    return this.moduloLogout;
   }
 
-  //RefreshToken--------------------------------------------
-  @action setRefreshToken = (token) => {
-    this.refreshToken = token
+  //moduloInformacion---------------------------------------------
+  @action cambiarModuloInformacion = (show) => {
+    this.moduloInformacion = show;
+  };
+
+  @computed get verModuloInformacion() {
+    return this.moduloInformacion;
   }
 
-  @computed get getRefreshToken() {
-    return this.refreshToken
-  }
+  //añadirManejadorDeClick---------------------------------------------
+  @action cambiarManejadorDeClick = (bool) => {
+    this.añadirManejadorDeClick = bool;
+  };
 
-  //LoginModal---------------------------------------------
-  @action setLoginModal = (show) => {
-    this.loginModal = show
-  }
-
-  @computed get showLoginModal() {
-    return this.loginModal
-  }
-
-  //LogoutModal---------------------------------------------
-  @action setLogoutModal = (show) => {
-    this.logoutModal = show
-  }
-
-  @computed get showLogoutModal() {
-    return this.logoutModal
-  }
-
-  //InfoModal---------------------------------------------
-  @action setInfoModal = (show) => {
-    this.infoModal = show
-  }
-
-  @computed get showInfoModal() {
-    return this.infoModal
-  }
-
-  //AddClickListener---------------------------------------------
-  @action setClickListener = (bool) => {
-    this.addClickListener = bool
-  }
-
-  @computed get getClickListener() {
-    return this.addClickListener
+  @computed get obtenerManejadorDeClick() {
+    return this.añadirManejadorDeClick;
   }
 
   //Save File Modal---------------------------------------------
-  @action setSaveFileModal = (bool) => {
-    this.saveFileModal = bool
-  }
+  @action cambiarModuloGuardarArchivo = (bool) => {
+    this.moduloGuardarArchivo = bool;
+  };
 
-  @computed get showSaveFileModal() {
-    return this.saveFileModal
+  @computed get mostrarModuloGuardarArchivo() {
+    return this.moduloGuardarArchivo;
   }
 
   //Load File Modal---------------------------------------------
-  @action setLoadFileModal = (bool) => {
-    this.loadFileModal = bool
-  }
+  @action cambiarModuloCargarArchivo = (bool) => {
+    this.moduloCargarArchivo = bool;
+  };
 
-  @computed get showLoadFileModal() {
-    return this.loadFileModal
+  @computed get mostrarModuloCargarArchivo() {
+    return this.moduloCargarArchivo;
   }
-
 }
 
 var store = new LuminescenceStore();

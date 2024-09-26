@@ -38,7 +38,7 @@ class CardListLight extends Component {
     if (this.state.isLoggedIn) {
       let lightCategory = { category: LIGHT_CATEGORY };
 
-      let token = this.props.store.getAccessToken;
+      let token = this.props.store.obtenerTokenDeAcceso;
       let config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -86,12 +86,12 @@ class CardListLight extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.getLoggedIn && prevState.isLoggedIn === false) {
+    if (this.props.store.obtenerInicioDeSesion && prevState.isLoggedIn === false) {
       this.setState({ isLoggedIn: true });
       this.clearList();
       this.getUserList();
     }
-    if (this.props.store.getLoggedIn === false && prevState.isLoggedIn) {
+    if (this.props.store.obtenerInicioDeSesion === false && prevState.isLoggedIn) {
       this.setState({ isLoggedIn: false });
       this.clearList();
       this.getFreeList();

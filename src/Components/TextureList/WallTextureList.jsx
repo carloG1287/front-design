@@ -46,7 +46,7 @@ class WallTextureList extends Component {
       let textureCategory = { category: WALL_CATEGORY };
       let textureCategorySolid = { category: WALL_SOLID_CATEGORY };
       let textureCategoryTile = { category: WALL_TILE_CATEGORY };
-      let token = this.props.store.getAccessToken;
+      let token = this.props.store.obtenerTokenDeAcceso;
       let config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -160,12 +160,12 @@ class WallTextureList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.getLoggedIn && prevState.isLoggedIn === false) {
+    if (this.props.store.obtenerInicioDeSesion && prevState.isLoggedIn === false) {
       this.setState({ isLoggedIn: true });
       this.clearList();
       this.getUserList();
     }
-    if (this.props.store.getLoggedIn === false && prevState.isLoggedIn) {
+    if (this.props.store.obtenerInicioDeSesion === false && prevState.isLoggedIn) {
       this.setState({ isLoggedIn: false });
       this.clearList();
       this.getFreeList();

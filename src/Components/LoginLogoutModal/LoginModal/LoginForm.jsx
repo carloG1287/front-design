@@ -46,7 +46,7 @@ class LoginForm extends Component {
   }
 
   handleLogin = () => {
-    store.setLoggedIn(true)
+    store.cambiarInicioDeSesion(true)
   }
 
   async handleLoginSubmit(e) {
@@ -71,14 +71,14 @@ class LoginForm extends Component {
           isDisabled: true,
         });
 
-        const loggedInUser = parseJwt(res.data.accessToken);
+        const loggedInUser = parseJwt(res.data.token);
 
-        this.props.store.setUsername(loggedInUser.name);
-        this.props.store.setAccessToken(res.data.accessToken);
-        this.props.store.setRefreshToken(res.data.refreshToken);
-        this.props.store.setLoggedIn(true);
+        this.props.store.cambiarNombreDeUsuario(loggedInUser.name);
+        this.props.store.cambiarTokenDeAcceso(res.data.accessToken);
+        this.props.store.cambiarTokenDeSesion(res.data.refreshToken);
+        this.props.store.cambiarInicioDeSesion(true);
 
-        this.props.store.setLoginModal(false);
+        this.props.store.cambiarModuloLogin(false);
       } catch (e) {
         if (user.email === 'feldspar@gmail.com' && user.password === 'feldspar') {
           this.setState({
@@ -87,15 +87,15 @@ class LoginForm extends Component {
             isPasswordCorrect: true,
             isDisabled: true,
           });
-  
+
           const loggedInUser = parseJwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
-  
-          store.setUsername(loggedInUser.username);
-          store.setAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
-          store.setRefreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
-          store.setLoggedIn(true);
-  
-          this.props.store.setLoginModal(false);
+
+          store.cambiarNombreDeUsuario(loggedInUser.username);
+          store.cambiarTokenDeAcceso("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
+          store.cambiarTokenDeSesion("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
+          store.cambiarInicioDeSesion(true);
+
+          this.props.store.cambiarModuloLogin(false);
 
           localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI')
 

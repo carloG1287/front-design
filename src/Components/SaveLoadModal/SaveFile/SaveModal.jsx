@@ -46,7 +46,7 @@ class SaveModal extends Component {
   }
 
   handleClose() {
-    this.props.store.setSaveFileModal(false);
+    this.props.store.cambiarModuloGuardarArchivo(false);
     this.setState({
       fileName: "",
       fileUri: "",
@@ -60,7 +60,7 @@ class SaveModal extends Component {
   }
 
   async handleRemove(id) {
-    let token = this.props.store.getAccessToken;
+    let token = this.props.store.obtenerTokenDeAcceso;
     let config = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -96,7 +96,7 @@ class SaveModal extends Component {
   }
 
   async updateSaveFileList() {
-    let token = this.props.store.getAccessToken;
+    let token = this.props.store.obtenerTokenDeAcceso;
     let config = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -117,7 +117,7 @@ class SaveModal extends Component {
     if (!this.state.isDisabled && this.state.fileName !== "") {
       const data = new FormData();
       data.append("file", blob);
-      let token = this.props.store.getAccessToken;
+      let token = this.props.store.obtenerTokenDeAcceso;
       let config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -170,7 +170,7 @@ class SaveModal extends Component {
       this.uploadFile(this.props.blob);
     }
 
-    if (this.props.store.showSaveFileModal && !prevState.showModal) {
+    if (this.props.store.mostrarModuloGuardarArchivo && !prevState.showModal) {
       this.setState({ showModal: true, isError: false, overwrite: "Save" });
       this.updateSaveFileList();
     }
@@ -182,7 +182,7 @@ class SaveModal extends Component {
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={store.showSaveFileModal}
+        show={store.mostrarModuloGuardarArchivo}
         onHide={() => this.handleClose()}
         id="saveModal"
       >

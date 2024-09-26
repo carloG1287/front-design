@@ -14,7 +14,7 @@ class SaveButton extends Component {
 
   handleSaveFileShow(e) {
     e.preventDefault();
-    this.props.store.setSaveFileModal(true);
+    this.props.store.cambiarModuloGuardarArchivo(true);
   }
 
   render() {

@@ -8,7 +8,7 @@ import SignupForm from "./SignupForm.jsx";
 
 @inject("store")
 @observer
-class LoginModal extends Component {
+class moduloLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ class LoginModal extends Component {
   }
 
   handleClose() {
-    this.props.store.setLoginModal(false);
+    this.props.store.cambiarModuloLogin(false);
   }
 
   render() {
@@ -27,9 +27,9 @@ class LoginModal extends Component {
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={store.showLoginModal}
+        show={store.mostrarModuloLogin}
         onHide={() => this.handleClose()}
-        id="loginModal"
+        id="moduloLogin"
       >
         <Modal.Body>
           <div className="login-form-space">
@@ -62,4 +62,4 @@ class LoginModal extends Component {
   }
 }
 
-export default LoginModal;
+export default moduloLogin;

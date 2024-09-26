@@ -21,8 +21,8 @@ class AuthRoute extends Component {
 
   handleAuth = () => {
     setTimeout(() => {
-      console.log(store.loggedIn)
-      if (store.loggedIn) {
+      console.log(store.usuarioHaIniciadoSesion)
+      if (store.usuarioHaIniciadoSesion) {
         this.setState({
           isTopBarRender: true,
           nodeShouldBeRender: this.props.component
@@ -30,7 +30,7 @@ class AuthRoute extends Component {
       } else {
         this.setState({
           isTopBarRender: false,
-          nodeShouldBeRender: <Redirect to={{ pathname: "/login",  state: { from: window.navigator.pathname } }} />
+          nodeShouldBeRender: <Redirect to={{ pathname: "/login", state: { from: window.navigator.pathname } }} />
         })
       }
     }, 1000)
@@ -50,7 +50,7 @@ class AuthRoute extends Component {
           isTopBarRender ? <TopBar /> : undefined
         }
         <Route path={path}>
-          { nodeShouldBeRender }
+          {nodeShouldBeRender}
         </Route>
       </div>
     )

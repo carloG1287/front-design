@@ -47,7 +47,7 @@ class LoadModal extends Component {
   }
 
   handleClose() {
-    this.props.store.setLoadFileModal(false);
+    this.props.store.cambiarModuloCargarArchivo(false);
     this.setState({
       fileName: "",
       fileUri: "",
@@ -61,7 +61,7 @@ class LoadModal extends Component {
   }
 
   async handleRemove(id) {
-    let token = this.props.store.getAccessToken;
+    let token = this.props.store.obtenerTokenDeAcceso;
     let config = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -83,7 +83,7 @@ class LoadModal extends Component {
   }
 
   async updateSaveFileList() {
-    let token = this.props.store.getAccessToken;
+    let token = this.props.store.obtenerTokenDeAcceso;
     let config = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -101,7 +101,7 @@ class LoadModal extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.showLoadFileModal && !prevState.showModal) {
+    if (this.props.store.mostrarModuloCargarArchivo && !prevState.showModal) {
       this.setState({ showModal: true, isError: false });
       this.updateSaveFileList();
     }
@@ -113,7 +113,7 @@ class LoadModal extends Component {
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={store.showLoadFileModal}
+        show={store.mostrarModuloCargarArchivo}
         onHide={() => this.handleClose()}
         id="loadModal"
       >
