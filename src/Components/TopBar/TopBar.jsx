@@ -40,8 +40,8 @@ class TopBar extends Component {
     return (
       <div className="top-bar">
         <div className="horizontal-flex">
-          <img src="./logo.png" className="top-bar-logo" alt="" />
           <CompanyName message={`Interior${'\u00A0'}Design`} />
+          <img src="./logo.png" className="top-bar-logo" alt="" style={{ marginLeft: '15px' }} />
         </div>
         <div className="horizontal-flex">
           {store.obtenerInicioDeSesion && (

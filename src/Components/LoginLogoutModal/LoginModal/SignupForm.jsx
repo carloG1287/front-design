@@ -167,10 +167,6 @@ class SignupForm extends Component {
           }}
         >
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaUser />
-            </div>
-
             <input
               placeholder="Nombre"
               variant="secondary"
@@ -184,9 +180,6 @@ class SignupForm extends Component {
             />
           </div>
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaEnvelope />
-            </div>
             <input
               placeholder="Email"
               variant="secondary"
@@ -200,9 +193,6 @@ class SignupForm extends Component {
             />
           </div>
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaKey />
-            </div>
             <input
               placeholder="Password"
               variant="secondary"
@@ -216,9 +206,6 @@ class SignupForm extends Component {
             />
           </div>
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaQuestion />
-            </div>
             <select 
               className="login-form-input" 
               variant="secundary"
@@ -235,9 +222,6 @@ class SignupForm extends Component {
             </select>
           </div>
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaExclamation />
-            </div>
             <input
               placeholder="Respuesta de seguridad"
               variant="secondary"

@@ -22,6 +22,7 @@ import {
   FaDraftingCompass,
   FaPlus,
   FaRedo,
+  FaCamera,
 } from "react-icons/fa";
 import { Tabs, Tab, OverlayTrigger, Tooltip } from "react-bootstrap";
 import CardListSofa from "./AddItems/CardListSofa.jsx";
@@ -1102,6 +1103,18 @@ class BlueprintPage extends Component {
                     </OverlayTrigger>
                   </li>
                 )}
+                 <li id="design_tab">
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Capturar</Tooltip>}
+                  >
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <FaCamera size='25px' />
+                      </div>
+                    </div>
+                  </OverlayTrigger>
+                </li>
               </ul>
             </div>
           </div>

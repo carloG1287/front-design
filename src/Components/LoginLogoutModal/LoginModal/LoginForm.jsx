@@ -2,7 +2,6 @@ import "../../../App.css";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
-import { FaEnvelope, FaKey } from "react-icons/fa";
 import { validateEmail, parseJwt } from "../../../Utils/Utils";
 import axios from "axios";
 import { BASE_URL_AUTH, USERS, LOGIN } from "../../../Constants.js";
@@ -80,7 +79,7 @@ class LoginForm extends Component {
 
         this.props.store.cambiarModuloLogin(false);
       } catch (e) {
-        if (user.email === 'feldspar@gmail.com' && user.password === 'feldspar') {
+        if (user.email === 'astrid@gmail.com' && user.password === 'astrid') {
           this.setState({
             isError: false,
             isEmailExists: true,
@@ -88,16 +87,16 @@ class LoginForm extends Component {
             isDisabled: true,
           });
 
-          const loggedInUser = parseJwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
+          const loggedInUser = parseJwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
 
           store.cambiarNombreDeUsuario(loggedInUser.username);
-          store.cambiarTokenDeAcceso("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
-          store.cambiarTokenDeSesion("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI");
+          store.cambiarTokenDeAcceso("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
+          store.cambiarTokenDeSesion("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
           store.cambiarInicioDeSesion(true);
 
           this.props.store.cambiarModuloLogin(false);
 
-          localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZlbGRzcGFyIFVzZXIifQ.AdWc65xs9Rzd5YcL0X0aOlB3Zdw81paykdE4tIhjPcI')
+          localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM')
 
           this.handleLogin()
 
@@ -144,10 +143,6 @@ class LoginForm extends Component {
             <SmallAlert message="invalid Email" variant="info" />
           )}
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaEnvelope />
-            </div>
-
             <input
               placeholder="Email"
               variant="secondary"
@@ -161,9 +156,6 @@ class LoginForm extends Component {
           </div>
 
           <div className="login-form-input-space">
-            <div className="login-form-icon">
-              <FaKey />
-            </div>
             <input
               placeholder="Password"
               variant="secondary"
