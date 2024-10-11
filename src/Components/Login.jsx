@@ -6,7 +6,9 @@ class Login extends Component {
     return (
       <section className="loginPage">
         <div className="loginCard">
-          <h1 className="loginText">Login</h1>
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+            <img src="/logo.png" height={300} width={300} />
+          </div>
           <LoginForm />
           <a href="/register" style={{ marginLeft: '45px' }}>
             No tienes cuenta? Registrate tocando aqui.
