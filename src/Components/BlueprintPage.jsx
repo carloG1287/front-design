@@ -859,95 +859,7 @@ class BlueprintPage extends Component {
     return (
       <div className="horizontal-container">
         {/* Left Column */}
-        <div className="sidebar">
-          {/* Main Navigation */}
-          <div>
-            <ul className="nav nav-sidebar vertical-container">
-              <li id="design_tab">
-                <OverlayTrigger
-                  placement="right"
-                  overlay={<Tooltip>Design</Tooltip>}
-                >
-                  <div className="icons">
-                    <div className="iconWrapper">
-                      <FaDraftingCompass />
-                    </div>
-                  </div>
-                </OverlayTrigger>
-              </li>
-              <li id="floorplan_tab">
-                <OverlayTrigger
-                  placement="right"
-                  overlay={<Tooltip>Edit Floorplan</Tooltip>}
-                >
-                  <div className="icons">
-                    <div className="iconWrapper">
-                      <FaPencilRuler />
-                    </div>
-                  </div>
-                </OverlayTrigger>
-              </li>
-              <li id="items_tab">
-                <OverlayTrigger
-                  placement="right"
-                  overlay={<Tooltip>Add Items</Tooltip>}
-                >
-                  <div className="icons">
-                    <div className="iconWrapper">
-                      <FaPlus />
-                    </div>
-                  </div>
-                </OverlayTrigger>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul className="nav nav-sidebar vertical-container">
-              <li>
-                <OverlayTrigger
-                  placement="right"
-                  overlay={<Tooltip>New Plan</Tooltip>}
-                >
-                  <div className="icons" id='new'>
-                    <div className="iconWrapper">
-                      <FaRedo />
-                    </div>
-                  </div>
-                </OverlayTrigger>
-              </li>
-              {store.obtenerInicioDeSesion && (
-                <li>
-                  <OverlayTrigger
-                    placement="right"
-                    overlay={<Tooltip>Save</Tooltip>}
-                  >
-                    <div className="icons">
-                      <div className="iconWrapper">
-                        <SaveButton />
-                      </div>
-                    </div>
-                  </OverlayTrigger>
-                </li>
-              )}
-              {store.obtenerInicioDeSesion && (
-                <li>
-                  <OverlayTrigger
-                    placement="right"
-                    overlay={<Tooltip>Load</Tooltip>}
-                  >
-                    <div className="icons">
-                      <div className="iconWrapper">
-                        <LoadButton />
-                      </div>
-                    </div>
-                  </OverlayTrigger>
-                </li>
-              )}
-            </ul>
-          </div>
-          <SaveModal blob={this.state.blob} clickFunc={this.saveFile} />
-          <LoadModal clickFunc={this.loadFile} />
-        </div>
+        
 
         <div id="texture-context-container">
           {/* Context Menu */}
@@ -970,9 +882,9 @@ class BlueprintPage extends Component {
         <div className="right-container">
           {/* 3D Viewer */}
           <div id="viewer">
-            <div id="camera-controls">
+            {/* <div id="camera-controls">
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 id="zoom-out"
                 className={"basic-button"}
@@ -980,7 +892,7 @@ class BlueprintPage extends Component {
                 <FaSearchMinus />
               </Button>
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 id="reset-view"
                 className={"basic-button"}
@@ -988,7 +900,7 @@ class BlueprintPage extends Component {
                 <FaHome />
               </Button>
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 id="zoom-in"
                 className={"basic-button"}
@@ -997,7 +909,7 @@ class BlueprintPage extends Component {
               </Button>
 
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 id="move-left"
                 className={"basic-button"}
@@ -1006,7 +918,7 @@ class BlueprintPage extends Component {
               </Button>
               <div className={"vertical-controls-container"}>
                 <Button
-                  variant="danger"
+                  variant="info"
                   size="sm"
                   id="move-up"
                   className={"basic-button"}
@@ -1014,7 +926,7 @@ class BlueprintPage extends Component {
                   <FaArrowUp />
                 </Button>
                 <Button
-                  variant="danger"
+                  variant="info"
                   size="sm"
                   id="move-down"
                   className={"basic-button"}
@@ -1023,25 +935,26 @@ class BlueprintPage extends Component {
                 </Button>
               </div>
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 id="move-right"
                 className={"basic-button"}
               >
                 <FaArrowRight />
               </Button>
-            </div>
+            </div> */}
 
             <div id="loading-modal">
               <h1>Loading...</h1>
             </div>
           </div>
+          
 
           {/*2D Floorplanner */}
           <div id="floorplanner">
             <canvas id="floorplanner-canvas"></canvas>
             <div id="floorplanner-controls">
-              <Button
+              {/* <Button
                 variant="secondary"
                 size="sm"
                 className="icon-text-button"
@@ -1073,15 +986,15 @@ class BlueprintPage extends Component {
                   <FaTrashAlt />
                 </span>
                 <span className="text-centre">Delete Walls</span>
-              </Button>
+              </Button> */}
 
               <Button
-                variant="danger"
+                variant="info"
                 size="sm"
                 className="icon-text-button"
                 id="update-floorplan"
               >
-                <span className="text-centre">Done</span>
+                <span className="text-centre">Listo</span>
                 <span className="icon-centre">
                   <FaChevronRight />
                 </span>
@@ -1101,28 +1014,96 @@ class BlueprintPage extends Component {
                 this.setState({ key: k });
               }}
             >
-              <Tab eventKey="sofa" title="Sofas">
+              {/* <Tab eventKey="sofa" title="Sofas">
                 <CardListSofa usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
-              </Tab>
-              <Tab eventKey="chair" title="Chairs">
+              </Tab> */}
+              <Tab eventKey="chair" title="Sillas">
                 <CardListChair usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="rug" title="Rugs">
+              <Tab eventKey="rug" title="Alfombras">
                 <CardListRug usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="misc" title="Misc">
+              <Tab eventKey="misc" title="Miscelaneos">
                 <CardListMisc usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="light" title="Lights">
+              <Tab eventKey="light" title="Luces">
                 <CardListLight usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="kitchen" title="Kitchen">
+              {/* <Tab eventKey="kitchen" title="Kitchen">
                 <CardListKitchen usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="arch" title="Architectural">
                 <CardListArch usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
-              </Tab>
+              </Tab> */}
             </Tabs>
+          </div>
+          <div className="menu">
+            <div display="flex center">
+              <ul className="nav nav-sidebar">
+                <li id="design_tab">
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Diseñar</Tooltip>}
+                  >
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <FaDraftingCompass size='25px' />
+                      </div>
+                    </div>
+                  </OverlayTrigger>
+                </li>
+                <li id="floorplan_tab">
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Editar piso</Tooltip>}
+                  >
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <FaPencilRuler size='25px' />
+                      </div>
+                    </div>
+                  </OverlayTrigger>
+                </li>
+                <li id="items_tab">
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Añadir objeto</Tooltip>}
+                  >
+                    <div className="icons">
+                      <div className="iconWrapper">
+                        <FaPlus size='25px' />
+                      </div>
+                    </div>
+                  </OverlayTrigger>
+                </li>
+                <li>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Nuevo plano</Tooltip>}
+                  >
+                    <div className="icons" id='new'>
+                      <div className="iconWrapper">
+                        <FaRedo size='25px' />
+                      </div>
+                    </div>
+                  </OverlayTrigger>
+                </li>
+                {store.obtenerInicioDeSesion && (
+                  <li>
+                    <OverlayTrigger
+                      placement="right"
+                      overlay={<Tooltip>Guardar</Tooltip>}
+                    >
+                      <div className="icons">
+                        <div className="iconWrapper">
+                          <SaveButton />
+                        </div>
+                      </div>
+                    </OverlayTrigger>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
         {/* End Right Column */}

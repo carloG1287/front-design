@@ -40,31 +40,23 @@ class TopBar extends Component {
     return (
       <div className="top-bar">
         <div className="horizontal-flex">
-          <img src="./logo-no-moon.svg" className="top-bar-logo" alt="" />
-          <CompanyName message="Feldspar" />
+          <img src="./logo.png" className="top-bar-logo" alt="" />
+          <CompanyName message={`Interior${'\u00A0'}Design`} />
         </div>
         <div className="horizontal-flex">
           {store.obtenerInicioDeSesion && (
             <div className="horizontal-flex">
               <NameDisplay nombreDeUsuario={store.nombreDeUsuario} />
               <TopBarButton
-                message="Logout"
+                message="Salir"
                 clickFunc={this.handleLogoutShow}
               />
             </div>
           )}
-          <Button
-            className="custom-light-button"
-            variant="light"
-            onClick={this.handleInfoShow}
-          >
-            <FaQuestionCircle />
-          </Button>
         </div>
 
         <ModuloLogin />
         <ModuloLogout />
-        <ModuloInformacion />
       </div>
     );
   }

@@ -132,7 +132,7 @@ class LoadModal extends Component {
             />
 
             <Button
-              variant="danger"
+              variant="info"
               className="login-submit-button"
               disabled={this.state.isDisabled}
               onClick={this.handleButtonClick}
@@ -147,7 +147,7 @@ class LoadModal extends Component {
               />
             )}
             {this.state.isError && (
-              <LargeAlert variant="danger" message="Some Error Occurred" />
+              <LargeAlert variant="info" message="Some Error Occurred" />
             )}
           </div>
         </Modal.Body>

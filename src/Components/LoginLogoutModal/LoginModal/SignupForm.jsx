@@ -2,7 +2,7 @@ import "../../../App.css";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
-import { FaEnvelope, FaKey, FaUser } from "react-icons/fa";
+import { FaEnvelope, FaExclamation, FaKey, FaQuestion, FaUser } from "react-icons/fa";
 import {
   validateEmail,
   validatePassword,
@@ -10,7 +10,6 @@ import {
 } from "../../../Utils/Utils";
 import axios from "axios";
 import { BASE_URL_AUTH, USERS, REGISTER } from "../../../Constants.js";
-import SmallAlert from "../../SmallAlert.jsx";
 import LargeAlert from "../../LargeAlert.jsx";
 
 @inject("store")
@@ -22,10 +21,14 @@ class SignupForm extends Component {
       signupUsernameValue: "",
       signupEmailValue: "",
       signupPasswordValue: "",
+      signupQuestionValue: "¿Cuál es el nombre de su primera mascota?",
+      signupAnswerValue: "",
 
       signupUsernameFormatError: false,
       signupEmailFormatError: false,
       signupPasswordFormatError: false,
+      signupQuestionFormatError: false,
+      signupAnswerFormatError: false,
 
       isDisabled: false,
 
@@ -47,8 +50,10 @@ class SignupForm extends Component {
   handleSignupUsernameChange(e) {
     if (!validateUsername(e.target.value)) {
       this.setState({ signupUsernameFormatError: true });
+      this.setState({ isDisabled: true })
     } else {
       this.setState({ signupUsernameFormatError: false });
+      this.setState({ isDisabled: false })
     }
     this.setState({ signupUsernameValue: e.target.value });
   }
@@ -56,8 +61,10 @@ class SignupForm extends Component {
   handleSignupEmailChange(e) {
     if (!validateEmail(e.target.value)) {
       this.setState({ signupEmailFormatError: true });
+      this.setState({ isDisabled: true })
     } else {
       this.setState({ signupEmailFormatError: false });
+      this.setState({ isDisabled: false })
     }
     this.setState({ signupEmailValue: e.target.value });
   }
@@ -65,12 +72,35 @@ class SignupForm extends Component {
   handleSignupPasswordChange(e) {
     if (!validatePassword(e.target.value)) {
       this.setState({ signupPasswordFormatError: true });
+      this.setState({ isDisabled: true })
     } else {
       this.setState({ signupPasswordFormatError: false });
+      this.setState({ isDisabled: false })
     }
     this.setState({ signupPasswordValue: e.target.value });
   }
 
+  handleSignupQuestionChange(e) {
+    if (!validatePassword(e.target.value)) {
+      this.setState({ signupQuestionFormatError: true });
+      this.setState({ isDisabled: true })
+    } else {
+      this.setState({ signupQuestionFormatError: false });
+      this.setState({ isDisabled: false })
+    }
+    this.setState({ signupQuestionValue: e.target.value });
+  }
+
+  handleSignupAnswerChange(e) {
+    if (e.target.value === '') {
+      this.setState({ signupAnswerFormatError: true });
+      this.setState({ isDisabled: true })
+    } else {
+      this.setState({ signupAnswerFormatError: false });
+      this.setState({ isDisabled: false })
+    }
+    this.setState({ signupAnswerValue: e.target.value });
+  }
   async handleSignupSubmit(e) {
     e.preventDefault();
 
@@ -78,15 +108,22 @@ class SignupForm extends Component {
       !this.state.signupUsernameFormatError &&
       !this.state.signupEmailFormatError &&
       !this.state.signupPasswordFormatError &&
+      !this.state.signupQuestionFormatError &&
+      !this.state.signupAnswerFormatError &&
       this.state.signupUsernameValue !== "" &&
       this.state.signupEmailValue !== "" &&
-      this.state.signupPasswordValue !== ""
+      this.state.signupPasswordValue !== "" && 
+      this.state.signupQuestionValue !== "" && 
+      this.state.signupAnswerValue !== "" 
     ) {
       this.setState({ isDisabled: true });
       const user = {
         name: this.state.signupUsernameValue,
         email: this.state.signupEmailValue,
         password: this.state.signupPasswordValue,
+        password_confirm: this.state.signupPasswordValue,
+        question: this.state.signupQuestionValue,
+        answer: this.state.signupAnswerValue
       };
       try {
         await axios.post(BASE_URL_AUTH + USERS + REGISTER, user);
@@ -129,16 +166,13 @@ class SignupForm extends Component {
             this.handleSignupSubmit(e);
           }}
         >
-          {this.state.signupUsernameFormatError && (
-            <SmallAlert message="Cannot be blank" variant="danger" />
-          )}
           <div className="login-form-input-space">
             <div className="login-form-icon">
               <FaUser />
             </div>
 
             <input
-              placeholder="Name"
+              placeholder="Nombre"
               variant="secondary"
               size="sm"
               type="text"
@@ -149,9 +183,6 @@ class SignupForm extends Component {
               className="login-form-input"
             />
           </div>
-          {this.state.signupEmailFormatError && (
-            <SmallAlert message="invalid Email" variant="danger" />
-          )}
           <div className="login-form-input-space">
             <div className="login-form-icon">
               <FaEnvelope />
@@ -168,10 +199,6 @@ class SignupForm extends Component {
               className="login-form-input"
             />
           </div>
-
-          {this.state.signupPasswordFormatError && (
-            <SmallAlert message="min. 8 characters" variant="danger" />
-          )}
           <div className="login-form-input-space">
             <div className="login-form-icon">
               <FaKey />
@@ -188,14 +215,48 @@ class SignupForm extends Component {
               className="login-form-input"
             />
           </div>
-
+          <div className="login-form-input-space">
+            <div className="login-form-icon">
+              <FaQuestion />
+            </div>
+            <select 
+              className="login-form-input" 
+              variant="secundary"
+              value={this.state.signupQuestionValue}
+              onChange={(e) => {
+                this.handleSignupQuestionChange(e);
+              }}
+            >
+              <option className="options">¿Cuál es el nombre de su primera mascota?</option>
+              <option className="options">¿Cuál es el segundo nombre de su madre?</option>
+              <option className="options">¿En qué ciudad nació usted?</option>
+              <option className="options">¿En qué año termino su carrera?</option>
+              <option className="options">¿Quién es su profesor de seminario favorito?</option>
+            </select>
+          </div>
+          <div className="login-form-input-space">
+            <div className="login-form-icon">
+              <FaExclamation />
+            </div>
+            <input
+              placeholder="Respuesta de seguridad"
+              variant="secondary"
+              size="sm"
+              type="text"
+              value={this.state.signupAnswerValue}
+              onChange={(e) => {
+                this.handleSignupAnswerChange(e);
+              }}
+              className="login-form-input"
+            />
+          </div>
           <Button
-            variant="danger"
+            variant="info"
             className="login-submit-button"
             type="submit"
             disabled={this.state.isDisabled}
           >
-            SignUp
+            Registrarse
           </Button>
         </form>
 
@@ -203,10 +264,10 @@ class SignupForm extends Component {
           <LargeAlert message="Successfully Registered" variant="success" />
         )}
         {this.state.isError && (
-          <LargeAlert message="Some ErrorOcurred" variant="danger" />
+          <LargeAlert message="Some ErrorOcurred" variant="info" />
         )}
         {this.state.isEmailExists && (
-          <LargeAlert message="Email already registered" variant="danger" />
+          <LargeAlert message="Email already registered" variant="info" />
         )}
       </div>
     );

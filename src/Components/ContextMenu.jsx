@@ -9,7 +9,7 @@ export default class ContextMenu extends Component {
       <div>
         <span id="context-menu-name" className="lead"></span>
         <Button
-          variant="danger"
+          variant="info"
           size="sm"
           block
           id="context-menu-delete"

@@ -141,7 +141,7 @@ class LoginForm extends Component {
           }}
         >
           {this.state.loginEmailFormatError && (
-            <SmallAlert message="invalid Email" variant="danger" />
+            <SmallAlert message="invalid Email" variant="info" />
           )}
           <div className="login-form-input-space">
             <div className="login-form-icon">
@@ -178,7 +178,7 @@ class LoginForm extends Component {
           </div>
 
           <Button
-            variant="danger"
+            variant="info"
             className="login-submit-button"
             disabled={this.state.isDisabled}
             type="submit"
@@ -188,13 +188,13 @@ class LoginForm extends Component {
         </form>
 
         {!this.state.isEmailExists && (
-          <LargeAlert message="Email is not registered" variant="danger" />
+          <LargeAlert message="Email is not registered" variant="info" />
         )}
         {this.state.isError && (
-          <LargeAlert message="Some ErrorOcurred" variant="danger" />
+          <LargeAlert message="Some ErrorOcurred" variant="info" />
         )}
         {!this.state.isPasswordCorrect && (
-          <LargeAlert message="Password Incorrect" variant="danger" />
+          <LargeAlert message="Password Incorrect" variant="info" />
         )}
       </div>
     );

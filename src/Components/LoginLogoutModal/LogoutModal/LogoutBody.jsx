@@ -41,7 +41,7 @@ class LogoutBody extends Component {
     return (
       <div className="vertical-container">
         <Button
-          variant="danger"
+          variant="info"
           className="login-submit-button"
           disabled={this.state.isDisabled}
           onClick={(e) => {
@@ -51,7 +51,7 @@ class LogoutBody extends Component {
           Logout
         </Button>
         {this.state.isError && (
-          <LargeAlert message="Some ErrorOcurred" variant="danger" />
+          <LargeAlert message="Some ErrorOcurred" variant="info" />
         )}
       </div>
     );

@@ -20,7 +20,7 @@ class SaveButton extends Component {
   render() {
     return (
       <div onClick={(e) => this.handleSaveFileShow(e)}>
-        <FaRegSave />
+        <FaRegSave size='25px' />
       </div>
     );
   }

@@ -8,6 +8,9 @@ class Login extends Component {
         <div className="loginCard">
           <h1 className="loginText">Login</h1>
           <LoginForm />
+          <a href="/register" style={{ marginLeft: '45px' }}>
+            No tienes cuenta? Registrate tocando aqui.
+          </a>
         </div>
       </section>
     );
