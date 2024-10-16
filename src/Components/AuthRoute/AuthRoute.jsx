@@ -4,7 +4,7 @@ import TopBar from "../TopBar/TopBar.jsx";
 import Loading from '../Loading/Loading.jsx';
 import { Route, Redirect } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import store from '../../LuminescenceStore.js'
+import store from '../../InteriorDesignStore.js'
 
 @inject("store")
 @observer
@@ -30,7 +30,7 @@ class AuthRoute extends Component {
       } else {
         this.setState({
           isTopBarRender: false,
-          nodeShouldBeRender: <Redirect to={{ pathname: "/login", state: { from: window.navigator.pathname } }} />
+          nodeShouldBeRender: <Redirect to={{ pathname: "/inicio-sesion", state: { from: window.navigator.pathname } }} />
         })
       }
     }, 1000)

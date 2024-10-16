@@ -7,7 +7,7 @@ import axios from "axios";
 import { BASE_URL_AUTH, USERS, LOGIN } from "../../../Constants.js";
 import SmallAlert from "../../SmallAlert.jsx";
 import LargeAlert from "../../LargeAlert.jsx";
-import store from '../../../LuminescenceStore.js'
+import store from '../../../InteriorDesignStore.js'
 
 @inject("store")
 @observer
@@ -32,7 +32,7 @@ class LoginForm extends Component {
   }
 
   handleLoginEmailChange(e) {
-    if (!validateEmail(e.target.value)) {
+    if (e.target.value === '') {
       this.setState({ loginEmailFormatError: true });
     } else {
       this.setState({ loginEmailFormatError: false });
@@ -62,7 +62,7 @@ class LoginForm extends Component {
       };
 
       try {
-        let res = await axios.post(BASE_URL_AUTH + USERS + LOGIN, user);
+        let res = await axios.post(BASE_URL_AUTH + LOGIN, user);
         this.setState({
           isError: false,
           isEmailExists: true,
@@ -72,12 +72,18 @@ class LoginForm extends Component {
 
         const loggedInUser = parseJwt(res.data.token);
 
-        this.props.store.cambiarNombreDeUsuario(loggedInUser.name);
-        this.props.store.cambiarTokenDeAcceso(res.data.accessToken);
-        this.props.store.cambiarTokenDeSesion(res.data.refreshToken);
+        this.props.store.cambiarNombreDeUsuario(loggedInUser.username);
+        this.props.store.cambiarTokenDeAcceso(res.data.token);
+        this.props.store.cambiarTokenDeSesion(res.data.token);
         this.props.store.cambiarInicioDeSesion(true);
 
         this.props.store.cambiarModuloLogin(false);
+
+        localStorage.setItem('token', res.data.token)
+
+        this.handleLogin()
+
+        return window.location.pathname = '/'
       } catch (e) {
         if (user.email === 'astrid@gmail.com' && user.password === 'astrid') {
           this.setState({
@@ -140,13 +146,13 @@ class LoginForm extends Component {
           }}
         >
           {this.state.loginEmailFormatError && (
-            <SmallAlert message="invalid Email" variant="info" />
+            <SmallAlert message="Usuario o correo inválido" variant="danger" />
           )}
           <div className="login-form-input-space">
             <input
-              placeholder="Email"
+              placeholder="Usuario o correo inválido"
               variant="secondary"
-              type="email"
+              type="text"
               value={this.state.loginEmailValue}
               onChange={(e) => {
                 this.handleLoginEmailChange(e);
@@ -168,25 +174,28 @@ class LoginForm extends Component {
               className="login-form-input"
             />
           </div>
-
+          <a href="/olvide-mi-contrasena" style={{ textAlign: 'end', margin: '0 0 10px 0' }}>
+            Olvidé mi contraseña
+          </a>
           <Button
             variant="info"
             className="login-submit-button"
             disabled={this.state.isDisabled}
             type="submit"
+            style={{ marginBottom: '-10px' }}
           >
-            Login
+            Iniciar Sesión
           </Button>
         </form>
 
         {!this.state.isEmailExists && (
-          <LargeAlert message="Email is not registered" variant="info" />
+          <LargeAlert message="Correo electronico es incorrecto" variant="danger" style={{ marginTop: '-10px' }} />
         )}
         {this.state.isError && (
-          <LargeAlert message="Some ErrorOcurred" variant="info" />
+          <LargeAlert message="Ha ocurrido un error" variant="danger" style={{ marginTop: '-10px' }} />
         )}
         {!this.state.isPasswordCorrect && (
-          <LargeAlert message="Password Incorrect" variant="info" />
+          <LargeAlert message="Contrasena incorrecta" variant="danger" style={{ marginTop: '-10px' }} />
         )}
       </div>
     );

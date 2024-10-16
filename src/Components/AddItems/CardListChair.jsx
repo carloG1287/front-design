@@ -99,7 +99,7 @@ class CardListChair extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         <CardList itemList={this.state.itemList} />
       </div>
     );

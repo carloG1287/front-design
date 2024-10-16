@@ -5,7 +5,7 @@ import { Alert } from "react-bootstrap";
 class SmallAlert extends Component {
   render() {
     return (
-        <Alert className="small-alert" variant={this.props.variant}>{this.props.message}</Alert>
+        <Alert className="small-alert" style={{ padding: '10px', textAlign: 'center', fontSize: '17px'}} variant={this.props.variant}>{this.props.message}</Alert>
     );
   }
 }

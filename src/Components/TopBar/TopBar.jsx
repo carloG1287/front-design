@@ -1,14 +1,12 @@
 import "../../App.css";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import Button from "react-bootstrap/Button";
-import { FaQuestionCircle } from "react-icons/fa";
 import ModuloLogin from "../LoginLogoutModal/LoginModal/LoginModal";
 import ModuloLogout from "../LoginLogoutModal/LogoutModal/LogoutModal";
 import NameDisplay from "./NameDisplay.jsx";
 import CompanyName from "./CompanyName.jsx";
-import TopBarButton from "./TopBarButton.jsx";
 import ModuloInformacion from "./InfoModal";
+import ModuloRepetir from "./RepeatModal";
 
 @inject("store")
 @observer
@@ -38,23 +36,15 @@ class TopBar extends Component {
   render() {
     const { store } = this.props;
     return (
-      <div className="top-bar">
-        <div className="horizontal-flex">
-          <CompanyName message={`Interior${'\u00A0'}Design`} />
-          <img src="./logo.png" className="top-bar-logo" alt="" style={{ marginLeft: '15px' }} />
-        </div>
-        <div className="horizontal-flex">
+      <div className="top-bar">  
+        <CompanyName message={`Interior${'\u00A0'}Design`} />
+        <div>
           {store.obtenerInicioDeSesion && (
-            <div className="horizontal-flex">
-              <NameDisplay nombreDeUsuario={store.nombreDeUsuario} />
-              <TopBarButton
-                message="Salir"
-                clickFunc={this.handleLogoutShow}
-              />
-            </div>
+            <NameDisplay nombreDeUsuario={store.nombreDeUsuario} />
           )}
         </div>
-
+        <ModuloRepetir />
+        <ModuloInformacion />
         <ModuloLogin />
         <ModuloLogout />
       </div>

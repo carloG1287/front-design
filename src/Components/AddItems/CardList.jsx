@@ -42,11 +42,6 @@ class CardList extends Component {
               src={BASE_URL + ASSETS + item.imgUrl}
               className="item-card-img"
             />
-            <Card.ImgOverlay className="item-card-body">
-              <Card.Body className="item-card-title-outer">
-                <div className="item-card-title">{item.name}</div>
-              </Card.Body>
-            </Card.ImgOverlay>
           </Card>
         ))}
       </div>

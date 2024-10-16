@@ -4,7 +4,8 @@ export function validateEmail(email) {
 }
 
 export function validatePassword(password) {
-    return password.length < 8 ? false : true
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    return re.test(String(password));
 }
 
 export function validateUsername(name) {

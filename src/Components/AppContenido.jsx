@@ -5,6 +5,7 @@ import axios from "axios";
 import { BP3D } from "../engine/blueprint3d.js";
 import { INIT_STRUCTURE, NEW_STRUCTURE } from "../Structures.js";
 import { BASE_URL, ASSETS } from "../Constants.js";
+import TopBarButton from "./TopBar/TopBarButton.jsx";
 import Button from "react-bootstrap/Button";
 import {
   FaSearchMinus,
@@ -23,6 +24,9 @@ import {
   FaPlus,
   FaRedo,
   FaCamera,
+  FaPenFancy,
+  FaCube,
+  FaInfoCircle,
 } from "react-icons/fa";
 import { Tabs, Tab, OverlayTrigger, Tooltip } from "react-bootstrap";
 import CardListSofa from "./AddItems/CardListSofa.jsx";
@@ -41,14 +45,15 @@ import SaveModal from "./SaveLoadModal/SaveFile/SaveModal.jsx";
 import LoadModal from "./SaveLoadModal/LoadFile/LoadModal.jsx";
 
 import { inject, observer } from "mobx-react";
+import ScreenCaptureButton from "./ScreenCaptureButton";
 
 @inject("store")
 @observer
-class BlueprintPage extends Component {
+class AppContenido extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: "sofa",
+      key: "chair",
       blueprint3d: {},
       añadirManejadorDeClick: false,
       currentStateName: "Design",
@@ -64,6 +69,9 @@ class BlueprintPage extends Component {
     this.initItems = this.initItems.bind(this);
     this.saveFile = this.saveFile.bind(this);
     this.loadFile = this.loadFile.bind(this);
+    this.handleLogoutShow = this.handleLogoutShow.bind(this);
+    this.handleModalRepeat = this.handleModalRepeat.bind(this);
+    this.handleModalInfo = this.handleModalInfo.bind(this);
   }
 
   saveFile() {
@@ -595,6 +603,21 @@ class BlueprintPage extends Component {
     init();
   }
 
+  handleLogoutShow(e) {
+    e.preventDefault();
+    this.props.store.cambiarModuloLogout(true);
+  }
+
+  handleModalRepeat(e) {
+    e.preventDefault();
+    this.props.store.cambiarModuloRepetir(true);
+  }
+
+  handleModalInfo(e) {
+    e.preventDefault();
+    this.props.store.cambiarModuloInformacion(true);
+  }
+
   async engine(viewKey) {
     /*
      * Floorplanner controls
@@ -860,7 +883,7 @@ class BlueprintPage extends Component {
     return (
       <div className="horizontal-container">
         {/* Left Column */}
-        
+
 
         <div id="texture-context-container">
           {/* Context Menu */}
@@ -949,7 +972,7 @@ class BlueprintPage extends Component {
               <h1>Loading...</h1>
             </div>
           </div>
-          
+
 
           {/*2D Floorplanner */}
           <div id="floorplanner">
@@ -1009,6 +1032,7 @@ class BlueprintPage extends Component {
           <div id="add-items">
             <Tabs
               variant="pills"
+              style={{ display: 'flex', flexDirection: 'column', width: '100px', position: 'absolute', right: '100px', top: '100px' }}
               id="controlled-tab-example"
               activeKey={this.state.key}
               onSelect={(k) => {
@@ -1024,7 +1048,7 @@ class BlueprintPage extends Component {
               <Tab eventKey="rug" title="Alfombras">
                 <CardListRug usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="misc" title="Miscelaneos">
+              <Tab eventKey="misc" title="Variados">
                 <CardListMisc usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="light" title="Luces">
@@ -1039,7 +1063,7 @@ class BlueprintPage extends Component {
             </Tabs>
           </div>
           <div className="menu">
-            <div display="flex center">
+            <div display="flex">
               <ul className="nav nav-sidebar">
                 <li id="design_tab">
                   <OverlayTrigger
@@ -1048,7 +1072,7 @@ class BlueprintPage extends Component {
                   >
                     <div className="icons">
                       <div className="iconWrapper">
-                        <FaDraftingCompass size='25px' />
+                        <FaCube size='25px' />
                       </div>
                     </div>
                   </OverlayTrigger>
@@ -1060,7 +1084,7 @@ class BlueprintPage extends Component {
                   >
                     <div className="icons">
                       <div className="iconWrapper">
-                        <FaPencilRuler size='25px' />
+                        <FaPenFancy size='25px' />
                       </div>
                     </div>
                   </OverlayTrigger>
@@ -1077,43 +1101,55 @@ class BlueprintPage extends Component {
                     </div>
                   </OverlayTrigger>
                 </li>
+                <li id="items_tab">
+                  <img src="./logo.png" className="top-bar-logo" alt="" style={{ width: '100px', height: '100px', margin: '-5px 10px 0 10px' }} />
+                </li>
                 <li>
                   <OverlayTrigger
                     placement="right"
-                    overlay={<Tooltip>Nuevo plano</Tooltip>}
-                  >
-                    <div className="icons" id='new'>
-                      <div className="iconWrapper">
-                        <FaRedo size='25px' />
-                      </div>
-                    </div>
-                  </OverlayTrigger>
-                </li>
-                {store.obtenerInicioDeSesion && (
-                  <li>
-                    <OverlayTrigger
-                      placement="right"
-                      overlay={<Tooltip>Guardar</Tooltip>}
+                    overlay={<Tooltip>Repetir plano</Tooltip>}
+                  >  
+                    <Button
+                      className='repeatButton'
+                      onClick={this.handleModalInfo}
                     >
-                      <div className="icons">
-                        <div className="iconWrapper">
-                          <SaveButton />
+                      <div className="icons" id='new'>
+                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
+                          <FaRedo size='25px' />
                         </div>
                       </div>
-                    </OverlayTrigger>
-                  </li>
-                )}
-                 <li id="design_tab">
+                    </Button>
+                  </OverlayTrigger>
+                </li>
+                <li id="design_tab">
+                  <ScreenCaptureButton />
+                </li>
+                <li>
                   <OverlayTrigger
                     placement="right"
-                    overlay={<Tooltip>Capturar</Tooltip>}
-                  >
-                    <div className="icons">
-                      <div className="iconWrapper">
-                        <FaCamera size='25px' />
+                    overlay={<Tooltip>Información</Tooltip>}
+                  > 
+                    <Button
+                      className='repeatButton'
+                      onClick={this.handleModalInfo}
+                    >
+                      <div className="icons" id='new'>
+                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
+                          <FaInfoCircle size='25px' />
+                        </div>
                       </div>
-                    </div>
+                    </Button>
                   </OverlayTrigger>
+                </li>
+                <li>
+                  <Button
+                    variant="outline-dark"
+                    className="top-bar-login-button"
+                    style={{ position: 'absolute', top: '10px', right: 0 }}
+                    onClick={this.handleLogoutShow}
+                  >
+                    Salir
+                  </Button>
                 </li>
               </ul>
             </div>
@@ -1125,4 +1161,4 @@ class BlueprintPage extends Component {
   }
 }
 
-export default BlueprintPage;
+export default AppContenido;

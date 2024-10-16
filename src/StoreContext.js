@@ -1,3 +1,3 @@
-import {store} from "./LuminescenceStore";
+import { store } from "./InteriorDesignStore";
 
-export default {store}
+export default { store };

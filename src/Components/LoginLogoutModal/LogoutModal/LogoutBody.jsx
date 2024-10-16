@@ -34,7 +34,9 @@ class LogoutBody extends Component {
 
     this.props.store.cambiarModuloLogout(false);
 
-    return window.location.pathname = '/login'
+    localStorage.removeItem('token')
+
+    return window.location.pathname = '/inicio-sesion'
   }
 
   render() {
@@ -48,7 +50,7 @@ class LogoutBody extends Component {
             this.handleLogoutSubmit(e);
           }}
         >
-          Logout
+          Salir
         </Button>
         {this.state.isError && (
           <LargeAlert message="Some ErrorOcurred" variant="info" />

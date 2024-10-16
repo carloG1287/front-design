@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BluePrintPage from "./BlueprintPage.jsx";
+import AppContenido from "./AppContenido.jsx";
 import TopBar from "./TopBar/TopBar.jsx";
 import ComingSoonPage from "./ComingSoonPage.jsx";
 import { inject, observer } from "mobx-react";
@@ -17,13 +17,13 @@ class Homepage extends Component {
       <div style={{ width: "100%", height: "100%" }}>
         <TopBar />
         {this.props.match && (
-          <BluePrintPage
+          <AppContenido
             viewKey={this.props.match.params.viewKey}
             añadirManejadorDeClick={store.obtenerManejadorDeClick}
           />
         )}
         {!this.props.match && (
-          <BluePrintPage
+          <AppContenido
             viewKey=""
             añadirManejadorDeClick={store.obtenerManejadorDeClick}
           />

@@ -5,6 +5,7 @@ import AuthRoute from "./Components/AuthRoute/AuthRoute.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./Components/Login.jsx";
 import Register from "./Components/Register.jsx";
+import Forget from "./Components/Forget.jsx";
 
 @inject("store")
 @observer
@@ -18,8 +19,9 @@ class App extends Component {
       <Router>
         <Switch>
           <Route path="/view/:viewKey" component={Homepage} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <Route path="/inicio-sesion" component={Login} />
+          <Route path="/olvide-mi-contrasena" component={Forget} />
+          <Route path="/registro" component={Register} />
           <AuthRoute path="/" component={<Homepage />} />
           <AuthRoute path="*" component={<Homepage />} />
         </Switch>

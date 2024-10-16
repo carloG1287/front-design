@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { BASE_URL_AUTH, USERS, REGISTER } from "../../../Constants.js";
 import LargeAlert from "../../LargeAlert.jsx";
+import SmallAlert from "../../SmallAlert";
 
 @inject("store")
 @observer
@@ -21,16 +22,18 @@ class SignupForm extends Component {
       signupUsernameValue: "",
       signupEmailValue: "",
       signupPasswordValue: "",
+      signupPasswordConfirmationValue: "",
       signupQuestionValue: "¿Cuál es el nombre de su primera mascota?",
       signupAnswerValue: "",
 
       signupUsernameFormatError: false,
       signupEmailFormatError: false,
       signupPasswordFormatError: false,
+      signupPasswordConfirmationFormatError: false,
       signupQuestionFormatError: false,
       signupAnswerFormatError: false,
 
-      isDisabled: false,
+      isDisabled: true,
 
       isRegistered: false,
       isEmailExists: false,
@@ -80,8 +83,19 @@ class SignupForm extends Component {
     this.setState({ signupPasswordValue: e.target.value });
   }
 
+  handleSignupPasswordConfirmationChange(e) {
+    if (this.signupPasswordValue === e.target.value) {
+      this.setState({ signupPasswordConfirmationFormatError: true });
+      this.setState({ isDisabled: true })
+    } else {
+      this.setState({ signupPasswordConfirmationFormatError: false });
+      this.setState({ isDisabled: false })
+    }
+    this.setState({ signupPasswordConfirmationValue: e.target.value });
+  }
+
   handleSignupQuestionChange(e) {
-    if (!validatePassword(e.target.value)) {
+    if (e.target.value === '') {
       this.setState({ signupQuestionFormatError: true });
       this.setState({ isDisabled: true })
     } else {
@@ -110,29 +124,34 @@ class SignupForm extends Component {
       !this.state.signupPasswordFormatError &&
       !this.state.signupQuestionFormatError &&
       !this.state.signupAnswerFormatError &&
+      !this.state.signupPasswordConfirmationFormatError &&
       this.state.signupUsernameValue !== "" &&
       this.state.signupEmailValue !== "" &&
       this.state.signupPasswordValue !== "" && 
       this.state.signupQuestionValue !== "" && 
-      this.state.signupAnswerValue !== "" 
+      this.state.signupAnswerValue !== "" &&
+      this.state.signupPasswordConfirmationValue === this.state.signupPasswordValue
     ) {
       this.setState({ isDisabled: true });
       const user = {
         name: this.state.signupUsernameValue,
+        username: this.state.signupUsernameValue,
         email: this.state.signupEmailValue,
         password: this.state.signupPasswordValue,
-        password_confirm: this.state.signupPasswordValue,
-        question: this.state.signupQuestionValue,
-        answer: this.state.signupAnswerValue
+        password_confirmation: this.state.signupPasswordConfirmationValue,
+        security_question: this.state.signupQuestionValue,
+        security_answer: this.state.signupAnswerValue
       };
       try {
-        await axios.post(BASE_URL_AUTH + USERS + REGISTER, user);
+        await axios.post(BASE_URL_AUTH + USERS, user);
         this.setState({
           isError: false,
           isEmailExists: false,
           isDisabled: true,
           isRegistered: true,
         });
+
+        return window.location.pathname = '/inicio-sesion' 
       } catch (e) {
         if (e.response === undefined) {
           this.setState({
@@ -166,9 +185,12 @@ class SignupForm extends Component {
             this.handleSignupSubmit(e);
           }}
         >
+          {this.state.signupUsernameFormatError && (
+            <SmallAlert message="Usuario inválido" variant="danger" />
+          )}
           <div className="login-form-input-space">
             <input
-              placeholder="Nombre"
+              placeholder="Usuario"
               variant="secondary"
               size="sm"
               type="text"
@@ -179,9 +201,12 @@ class SignupForm extends Component {
               className="login-form-input"
             />
           </div>
+          {this.state.signupEmailFormatError && (
+            <SmallAlert message="Correo inválido" variant="danger" />
+          )}
           <div className="login-form-input-space">
             <input
-              placeholder="Email"
+              placeholder="Correo electrónico"
               variant="secondary"
               size="sm"
               type="email"
@@ -194,7 +219,7 @@ class SignupForm extends Component {
           </div>
           <div className="login-form-input-space">
             <input
-              placeholder="Password"
+              placeholder="Contraseña"
               variant="secondary"
               size="sm"
               type="password"
@@ -205,6 +230,22 @@ class SignupForm extends Component {
               className="login-form-input"
             />
           </div>
+          <div className="login-form-input-space">
+            <input
+              placeholder="Confirmar contraseña"
+              variant="secondary"
+              size="sm"
+              type="password"
+              value={this.state.signupPasswordConfirmationValue}
+              onChange={(e) => {
+                this.handleSignupPasswordConfirmationChange(e);
+              }}
+              className="login-form-input"
+            />
+          </div>
+          {(this.state.signupPasswordFormatError || this.state.signupPasswordConfirmationFormatError) && (
+            <SmallAlert message="Contraseñas invalida" variant="danger" />
+          )}
           <div className="login-form-input-space">
             <select 
               className="login-form-input" 
@@ -248,7 +289,7 @@ class SignupForm extends Component {
           <LargeAlert message="Successfully Registered" variant="success" />
         )}
         {this.state.isError && (
-          <LargeAlert message="Some ErrorOcurred" variant="info" />
+          <LargeAlert message="Ha ocurrido un error" variant="info" />
         )}
         {this.state.isEmailExists && (
           <LargeAlert message="Email already registered" variant="info" />

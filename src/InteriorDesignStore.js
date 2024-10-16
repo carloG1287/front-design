@@ -1,7 +1,7 @@
 import { observable, action, computed } from "mobx";
 import { parseJwt } from "./Utils/Utils";
 
-class LuminescenceStore {
+class InteriorDesignStore {
   @observable usuarioHaIniciadoSesion = parseJwt(localStorage.getItem("token"))
     ?.username
     ? true
@@ -12,10 +12,11 @@ class LuminescenceStore {
   @observable tokenDeSesion = "";
   @observable moduloLogin = false;
   @observable moduloLogout = false;
+  @observable moduloRepetir = false;
   @observable moduloInformacion = false;
-  @observable añadirManejadorDeClick = false;
   @observable moduloGuardarArchivo = false;
   @observable moduloCargarArchivo = false;
+  @observable añadirManejadorDeClick = false;
 
   //usuarioHaIniciadoSesion---------------------------------------------
   @action cambiarInicioDeSesion = (login) => {
@@ -80,6 +81,15 @@ class LuminescenceStore {
     return this.moduloInformacion;
   }
 
+  //moduloRepetir---------------------------------------------
+  @action cambiarModuloRepetir = (show) => {
+    this.moduloRepetir = show;
+  };
+
+  @computed get verModuloRepetir() {
+    return this.moduloRepetir;
+  }
+
   //añadirManejadorDeClick---------------------------------------------
   @action cambiarManejadorDeClick = (bool) => {
     this.añadirManejadorDeClick = bool;
@@ -108,5 +118,5 @@ class LuminescenceStore {
   }
 }
 
-var store = new LuminescenceStore();
+var store = new InteriorDesignStore();
 export default store;

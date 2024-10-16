@@ -6,10 +6,13 @@ class Register extends Component {
     return (
       <section className="loginPage">
         <div className="loginCard">
-          <h1 className="loginText">Registro</h1>
+        <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'center' }}>
+            <img src="/blue-logo.png" height={300} width={300} />
+            <h1>Registro</h1>
+          </div>
           <SignupForm />
-          <a href="/login" style={{ marginLeft: '50px' }}>
-            Ya estás registrado? Accede tocando aqui.
+          <a href="/inicio-sesion" style={{ marginLeft: '50px' }}>
+            ¿Ya estás registrado? Accede tocando aquí.
           </a>
         </div>
       </section>

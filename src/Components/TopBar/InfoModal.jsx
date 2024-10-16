@@ -29,20 +29,15 @@ class moduloLogin extends Component {
         <Modal.Body>
           <div className="login-form-space">
             <h2>
-              <FaInfoCircle /> About
+              <FaInfoCircle /> Información
             </h2>
             <hr className="small-underline" />
             <p className="info-text">
-              Create and share 3D design of home interiors in a quick and easy
-              way. Share designs with clients with a single link which can be
-              viewed on all devices without downloading any plugins. Allows for
-              great flexibility in a post COVID work environment. <br />
-              We support custom wall and floor textures and 3D models of
-              furniture uploaded to your account exclusively.
+              Interior Design es una aplicación web que permite a los usuarios crear y visualizar diseños de interiores en 3D. Con esta herramienta, se puede planificar la distribución de espacios, seleccionar muebles y decoraciones de una extensa biblioteca y ver cómo quedarían en la realidad. La aplicación ofrece una interfaz intuitiva que facilita el modelado de habitaciones, casas o incluso edificios completos, brindando la posibilidad de explorar y modificar los diseños en tiempo real. Además, algunos servicios similares proporcionan renders fotorrealistas y vistas panorámicas para una experiencia más inmersiva.
               <br />
               <br />
               <p style={{ "font-weight": "600" }}>
-                <FaEnvelope /> luminescence.feldspar@gmail.com
+                <FaEnvelope /> interiordesign@gmail.com
               </p>
             </p>
           </div>

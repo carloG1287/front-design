@@ -28,7 +28,7 @@ class moduloLogin extends Component {
         id="moduloLogout"
       >
         <Modal.Body>
-          <div className="modal-plain-text">Confirm Log out?</div>
+          <div className="modal-plain-text text-center">¿Está seguro de querer salir?</div>
           <LogoutBody />
         </Modal.Body>
       </Modal>
