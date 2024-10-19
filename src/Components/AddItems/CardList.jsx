@@ -33,7 +33,7 @@ class CardList extends Component {
             model-type={item.type}
             model-name={item.name}
             onClick={() => {
-              this.props.store.cambiarManejadorDeClick(true);
+              this.props.store.setClickListener(true);
             }}
             key={iterator}
             className="bg-dark text-white item-card add-item"
@@ -41,7 +41,14 @@ class CardList extends Component {
             <Card.Img
               src={BASE_URL + ASSETS + item.imgUrl}
               className="item-card-img"
-            />
+            /> 
+            {/* Esto estara temporalmente */}
+            <Card.ImgOverlay className="item-card-body">
+              <Card.Body className="item-card-title-outer">
+                <div className="item-card-title">{item.name}</div>
+              </Card.Body>
+            </Card.ImgOverlay>
+            {/* Esto estara temporalmente */}
           </Card>
         ))}
       </div>

@@ -10,9 +10,7 @@ class ScreenCaptureButton extends Component {
   }
 
   handleCaptureClick() {
-    // Seleccionamos el elemento que queremos capturar, en este caso todo el body
     html2canvas(document.body.querySelector('#root').querySelector('div')).then((canvas) => {
-      // Convertimos el canvas a una imagen y la descargamos
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
       link.download = 'captura.png';

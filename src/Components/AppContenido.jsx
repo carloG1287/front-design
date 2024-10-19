@@ -1111,7 +1111,7 @@ class AppContenido extends Component {
                   >  
                     <Button
                       className='repeatButton'
-                      onClick={this.handleModalInfo}
+                      onClick={this.handleModalRepeat}
                     >
                       <div className="icons" id='new'>
                         <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
