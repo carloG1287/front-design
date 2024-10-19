@@ -33,7 +33,7 @@ class CardList extends Component {
             model-type={item.type}
             model-name={item.name}
             onClick={() => {
-              this.props.store.setClickListener(true);
+              this.props.store.cambiarManejadorDeClick(true);
             }}
             key={iterator}
             className="bg-dark text-white item-card add-item"
