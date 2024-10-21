@@ -110,7 +110,7 @@ class ForgetForm extends Component {
           </div>
           <div className="login-form-input-space">
             <input
-              placeholder="Password"
+              placeholder="Contraseña"
               variant="secondary"
               size="sm"
               type="password"

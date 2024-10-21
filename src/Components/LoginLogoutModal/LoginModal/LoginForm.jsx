@@ -150,7 +150,7 @@ class LoginForm extends Component {
           )}
           <div className="login-form-input-space">
             <input
-              placeholder="Usuario o correo inválido"
+              placeholder="Usuario o correo"
               variant="secondary"
               type="text"
               value={this.state.loginEmailValue}
@@ -163,7 +163,7 @@ class LoginForm extends Component {
 
           <div className="login-form-input-space">
             <input
-              placeholder="Password"
+              placeholder="Contraseña"
               variant="secondary"
               size="sm"
               type="password"
