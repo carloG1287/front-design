@@ -43,11 +43,11 @@ class CardList extends Component {
               className="item-card-img"
             /> 
             {/* Esto estara temporalmente */}
-            <Card.ImgOverlay className="item-card-body">
+            {/* <Card.ImgOverlay className="item-card-body">
               <Card.Body className="item-card-title-outer">
                 <div className="item-card-title">{item.name}</div>
               </Card.Body>
-            </Card.ImgOverlay>
+            </Card.ImgOverlay> */}
             {/* Esto estara temporalmente */}
           </Card>
         ))}

@@ -129,8 +129,8 @@ class AppContenido extends Component {
       $("#zoom-in").dblclick(preventDefault);
       $("#zoom-out").dblclick(preventDefault);
 
-      $("#reset-view").click(three.centerCamera);
-      $("#reset-view").on("touchend", three.centerCamera);
+      // $("#reset-view").click(three.centerCamera);
+      // $("#reset-view").on("touchend", three.centerCamera);
 
       $("#move-left").click(function () {
         pan(directions.LEFT);
@@ -378,11 +378,11 @@ class AppContenido extends Component {
 
       $("#update-floorplan").click(floorplanUpdate);
       function reset() {
-        $("texture-context-container").hide();
-        $("#wallTextures").hide();
-        $("#floorTexturesDiv").hide();
+        // $("texture-context-container").hide();
+        // $("#wallTextures").hide();
+        // $("#floorTexturesDiv").hide();
       }
-      stateChangeCallbacks.add(reset);
+      // stateChangeCallbacks.add(reset);
 
       initLeftMenu();
 
@@ -557,9 +557,9 @@ class AppContenido extends Component {
       three.wallClicked.add(initTextureSelectors);
       three.floorClicked.add(floorClicked);
       three.wallClicked.add(initTextureSelectors);
-      three.itemSelectedCallbacks.add(reset);
+      // three.itemSelectedCallbacks.add(reset);
       three.wallClicked.add(initTextureSelectors);
-      three.nothingClicked.add(reset);
+      // three.nothingClicked.add(reset);
       three.wallClicked.add(initTextureSelectors);
       // sideMenu.stateChangeCallbacks.add(reset);
       three.wallClicked.add(initTextureSelectors);
@@ -591,13 +591,13 @@ class AppContenido extends Component {
     }
 
     function reset() {
-      if (currentTarget !== undefined && currentTarget !== null) {
-        currentTarget.removeOutline();
-      }
-      $("texture-context-container").hide();
-      $("#wallTextures").hide();
-      $("#floorTexturesDiv").hide();
-      initTextureSelectors();
+      // if (currentTarget !== undefined && currentTarget !== null) {
+      //   currentTarget.removeOutline();
+      // }
+      // $("texture-context-container").hide();
+      // $("#wallTextures").hide();
+      // $("#floorTexturesDiv").hide();
+      // initTextureSelectors();
     }
 
     init();
@@ -642,25 +642,25 @@ class AppContenido extends Component {
         scope.handleWindowResize();
 
         // mode buttons
-        scope.floorplanner.modeResetCallbacks.add(function (mode) {
-          $(draw).removeClass(activeStlye);
-          $(remove).removeClass(activeStlye);
-          $(move).removeClass(activeStlye);
-          if (mode === BP3D.Floorplanner.floorplannerModes.MOVE) {
-            $(move).addClass(activeStlye);
-          } else if (mode === BP3D.Floorplanner.floorplannerModes.DRAW) {
-            $(draw).addClass(activeStlye);
-          } else if (mode === BP3D.Floorplanner.floorplannerModes.DELETE) {
-            $(remove).addClass(activeStlye);
-          }
+        // scope.floorplanner.modeResetCallbacks.add(function (mode) {
+        //   // $(draw).removeClass(activeStlye);
+        //   // $(remove).removeClass(activeStlye);
+        //   // $(move).removeClass(activeStlye);
+        //   // if (mode === BP3D.Floorplanner.floorplannerModes.MOVE) {
+        //   //   $(move).addClass(activeStlye);
+        //   // } else if (mode === BP3D.Floorplanner.floorplannerModes.DRAW) {
+        //   //   $(draw).addClass(activeStlye);
+        //   // } else if (mode === BP3D.Floorplanner.floorplannerModes.DELETE) {
+        //   //   $(remove).addClass(activeStlye);
+        //   // }
 
-          if (mode === BP3D.Floorplanner.floorplannerModes.DRAW) {
-            $("#draw-walls-hint").show();
-            scope.handleWindowResize();
-          } else {
-            $("#draw-walls-hint").hide();
-          }
-        });
+        //   // if (mode === BP3D.Floorplanner.floorplannerModes.DRAW) {
+        //   //   $("#draw-walls-hint").show();
+        //   //   scope.handleWindowResize();
+        //   // } else {
+        //   //   $("#draw-walls-hint").hide();
+        //   // }
+        // });
 
         $(move).click(function () {
           scope.floorplanner.setMode(BP3D.Floorplanner.floorplannerModes.MOVE);
@@ -689,7 +689,7 @@ class AppContenido extends Component {
       }
 
       this.updateFloorplanView = function () {
-        scope.floorplanner.reset();
+        // scope.floorplanner.reset();
       };
 
       this.handleWindowResize = function () {
@@ -855,13 +855,13 @@ class AppContenido extends Component {
     }
     handleWindowResize();
 
-    function reset() {
-      $("texture-context-container").hide();
-      $("#wallTextures").hide();
-      $("#floorTexturesDiv").hide();
-    }
+    // function reset() {
+    //   $("texture-context-container").hide();
+    //   $("#wallTextures").hide();
+    //   $("#floorTexturesDiv").hide();
+    // }
 
-    reset();
+    // reset();
     this.setState({ currentStateName: "Design" });
 
     //change mobx state-active-tab
@@ -1103,6 +1103,23 @@ class AppContenido extends Component {
                 </li>
                 <li id="items_tab">
                   <img src="./logo.png" className="top-bar-logo" alt="" style={{ width: '100px', height: '100px', margin: '-5px 10px 0 10px' }} />
+                </li>
+                <li style={{ display: 'none' }}>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Repetir plano</Tooltip>}
+                  >  
+                    <Button
+                      className='repeatButton'
+                      onClick={this.handleModalRepeat}
+                    >
+                      <div className="icons" id='new'>
+                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
+                          <FaRedo size='25px' />
+                        </div>
+                      </div>
+                    </Button>
+                  </OverlayTrigger>
                 </li>
                 <li>
                   <OverlayTrigger

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { FaInfoCircle, FaEnvelope } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
+import { Button } from "react-bootstrap";
 
 @inject("store")
 @observer
@@ -40,6 +41,11 @@ class moduloLogin extends Component {
                 <FaEnvelope /> interiordesign@gmail.com
               </p>
             </p>
+            <Button
+              onClick={() => this.handleClose()}
+            >
+              Cerrar
+            </Button>
           </div>
         </Modal.Body>
       </Modal>

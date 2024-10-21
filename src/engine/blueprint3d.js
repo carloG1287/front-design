@@ -3494,7 +3494,7 @@ var Polygon = require('polygon')
                     }
                 });
                 floorplan.roomLoadedCallbacks.add(function () {
-                    scope.reset();
+                    // scope.reset();
                 });
             }
             /** */
@@ -3623,10 +3623,10 @@ var Polygon = require('polygon')
             };
             /** */
             Floorplanner.prototype.reset = function () {
-                this.resizeView();
-                this.setMode(Floorplanner_1.floorplannerModes.MOVE);
-                this.resetOrigin();
-                this.view.draw();
+                // this.resizeView();
+                // this.setMode(Floorplanner_1.floorplannerModes.MOVE);
+                // this.resetOrigin();
+                // this.view.draw();
             };
             /** */
             Floorplanner.prototype.resizeView = function () {

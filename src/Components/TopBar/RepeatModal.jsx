@@ -11,10 +11,16 @@ class moduloRepetir extends Component {
   constructor(props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
+    this.handleAccept = this.handleAccept.bind(this);
   }
 
   handleClose() {
     this.props.store.cambiarModuloRepetir(false)
+  }
+
+  handleAccept() {
+    this.props.store.cambiarModuloRepetir(false)
+    return window.location.reload()
   }
 
   render() {
@@ -38,13 +44,24 @@ class moduloRepetir extends Component {
               <br />
               <br />
             </p>
-            <Button
-              variant="info"
-              className="login-submit-button"
-              onClick={this.handleClose}
-            >
-              Repetir
-            </Button>
+            <div style={{ display: 'flex', width: '100%', flexWrap: 'nowrap', gap: '10px' }}>
+              <Button
+                variant="danger"
+                className="login-submit-button"
+                style={{ width: 'calc(50% - 10px)', background: 'red' }}
+                onClick={this.handleClose}
+              >
+                Cerrar
+              </Button>
+              <Button
+                variant="info"
+                className="login-submit-button"
+                style={{ width: 'calc(50% - 10px)' }}
+                onClick={this.handleAccept}
+              >
+                Repetir
+              </Button>
+            </div>
           </div>
         </Modal.Body>
       </Modal>
