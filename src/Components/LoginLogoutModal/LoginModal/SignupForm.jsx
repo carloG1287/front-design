@@ -286,13 +286,13 @@ class SignupForm extends Component {
         </form>
 
         {this.state.isRegistered && (
-          <LargeAlert message="Successfully Registered" variant="success" />
+          <LargeAlert message="Usuario registrado correctamente" variant="success" />
         )}
         {this.state.isError && (
-          <LargeAlert message="Ha ocurrido un error" variant="info" />
+          <LargeAlert message="Este usuario ha sido registrado" variant="danger" />
         )}
         {this.state.isEmailExists && (
-          <LargeAlert message="Email already registered" variant="info" />
+          <LargeAlert message="Email already registered" variant="danger" />
         )}
       </div>
     );

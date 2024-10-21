@@ -5,7 +5,7 @@ export default class Company extends Component {
   render() {
     return (
       <div className="company-name">
-        <h2>{this.props.message}</h2>
+        <h2>Office Interior Design</h2>
       </div>
     );
   }

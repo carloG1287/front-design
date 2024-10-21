@@ -34,12 +34,12 @@ class moduloLogin extends Component {
             </h2>
             <hr className="small-underline" />
             <p className="info-text">
-              Interior Design es una aplicación web que permite a los usuarios crear y visualizar diseños de interiores en 3D. Con esta herramienta, se puede planificar la distribución de espacios, seleccionar muebles y decoraciones de una extensa biblioteca y ver cómo quedarían en la realidad. La aplicación ofrece una interfaz intuitiva que facilita el modelado de habitaciones, casas o incluso edificios completos, brindando la posibilidad de explorar y modificar los diseños en tiempo real. Además, algunos servicios similares proporcionan renders fotorrealistas y vistas panorámicas para una experiencia más inmersiva.
-              <br />
+              Office Interior Design es una aplicación web que permite a los usuarios crear y visualizar diseños de interiores en 3D. Con esta herramienta, se puede planificar la distribución de espacios, seleccionar muebles y decoraciones de una extensa biblioteca y ver cómo quedarían en la realidad. La aplicación ofrece una interfaz intuitiva que facilita el modelado de habitaciones, casas o incluso edificios completos, brindando la posibilidad de explorar y modificar los diseños en tiempo real. Además, algunos servicios similares proporcionan renders fotorrealistas y vistas panorámicas para una experiencia más inmersiva.
+              {/* <br />
               <br />
               <p style={{ "font-weight": "600" }}>
                 <FaEnvelope /> interiordesign@gmail.com
-              </p>
+              </p> */}
             </p>
             <Button
               onClick={() => this.handleClose()}

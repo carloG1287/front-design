@@ -42,16 +42,29 @@ class LogoutBody extends Component {
   render() {
     return (
       <div className="vertical-container">
-        <Button
-          variant="info"
-          className="login-submit-button"
-          disabled={this.state.isDisabled}
-          onClick={(e) => {
-            this.handleLogoutSubmit(e);
-          }}
-        >
-          Salir
-        </Button>
+        <div style={{ display: 'flex', width: '100%', flexWrap: 'nowrap', gap: '10px' }}>
+          <Button
+            variant="danger"
+            className="login-submit-button"
+            style={{ width: 'calc(50% - 10px)', background: 'red' }}
+            onClick={() => {
+              this.props.store.cambiarModuloLogout(false);
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="info"
+            className="login-submit-button"
+            style={{ width: 'calc(50% - 10px)' }}
+            disabled={this.state.isDisabled}
+            onClick={(e) => {
+              this.handleLogoutSubmit(e);
+            }}
+          >
+            Salir
+          </Button>
+        </div>
         {this.state.isError && (
           <LargeAlert message="Some ErrorOcurred" variant="info" />
         )}

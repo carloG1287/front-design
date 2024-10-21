@@ -1048,7 +1048,7 @@ class AppContenido extends Component {
               <Tab eventKey="rug" title="Alfombras">
                 <CardListRug usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
-              <Tab eventKey="misc" title="Variados">
+              <Tab eventKey="misc" title="Oficina personal y corporativa">
                 <CardListMisc usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab>
               <Tab eventKey="light" title="Luces">

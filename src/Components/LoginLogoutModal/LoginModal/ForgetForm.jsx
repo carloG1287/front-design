@@ -14,6 +14,7 @@ class ForgetForm extends Component {
     this.state = {
       forgetUsername: "",
       forgetNewPassword: "",
+      forgetNewConfirmPassword: "",
       forgetSecurityAnswer: "",
       forgetUsernameFormatError: false,
 
@@ -27,6 +28,7 @@ class ForgetForm extends Component {
 
     this.handleForgetUsername = this.handleForgetUsername.bind(this);
     this.handleForgetNewPassword = this.handleForgetNewPassword.bind(this);
+    this.handleForgetNewConfirmPassword = this.handleForgetNewConfirmPassword.bind(this);
     this.handleForgetSecurityAnswer = this.handleForgetSecurityAnswer.bind(this);
   }
 
@@ -54,6 +56,10 @@ class ForgetForm extends Component {
     this.setState({ forgetNewPassword: e.target.value });
   }
 
+  handleForgetNewConfirmPassword(e) {
+    this.setState({ forgetNewConfirmPassword: e.target.value });
+  }
+
   handleForgetSecurityAnswer(e) {
     this.setState({ forgetSecurityAnswer: e.target.value });
   }
@@ -65,8 +71,12 @@ class ForgetForm extends Component {
   async handleChangePassword(e) {
     e.preventDefault();
 
-    if (!this.state.isDisabled && this.state.forgetUsername && this.state.forgetNewPassword && this.state.forgetSecurityAnswer) {
-      const { forgetUsername, forgetNewPassword, forgetSecurityAnswer } = this.state;
+    if (!this.state.isDisabled && this.state.forgetUsername && this.state.forgetNewPassword && this.state.forgetNewConfirmPassword && this.state.forgetSecurityAnswer) {
+      const { forgetUsername, forgetNewPassword, forgetNewConfirmPassword, forgetSecurityAnswer } = this.state;
+
+      if (forgetNewConfirmPassword !== forgetNewPassword) {
+        return this.setState({ showSmallAlert: true });
+      }
 
       const body = {
         security_answer: forgetSecurityAnswer,
@@ -110,13 +120,26 @@ class ForgetForm extends Component {
           </div>
           <div className="login-form-input-space">
             <input
-              placeholder="Contraseña"
+              placeholder="Nueva contraseña"
               variant="secondary"
               size="sm"
               type="password"
               value={this.state.forgetNewPassword}
               onChange={(e) => {
                 this.handleForgetNewPassword(e);
+              }}
+              className="login-form-input"
+            />
+          </div>
+          <div className="login-form-input-space">
+            <input
+              placeholder="Confirmar nueva contraseña"
+              variant="secondary"
+              size="sm"
+              type="password"
+              value={this.state.forgetNewConfirmPassword}
+              onChange={(e) => {
+                this.handleForgetNewConfirmPassword(e);
               }}
               className="login-form-input"
             />
@@ -151,7 +174,7 @@ class ForgetForm extends Component {
         </form>
 
         {this.state.showSmallAlert && (
-          <SmallAlert message="Credenciales incorrectas" variant="danger" />
+          <SmallAlert message="Ha ocurrido un problema" variant="danger" />
         )}
       </div>
     );
