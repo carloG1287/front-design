@@ -193,13 +193,13 @@ class FloorTextureList extends Component {
   render() {
     return (
       <div className="texture-panel">
-        <div className="panel-heading">Adjust Floor</div>
+        <div className="panel-heading">Ajustar piso</div>
         <hr className="small-underline" />
-        <div className="texture-panel-heading">Woods</div>
+        <div className="texture-panel-heading">Madera</div>
         <TextureList textureList={this.state.textureListWood.reverse()} />
-        <div className="texture-panel-heading">Marbles</div>
+        <div className="texture-panel-heading">Mármol</div>
         <TextureList textureList={this.state.textureListMarble.reverse()} />
-        <div className="texture-panel-heading">Tiles</div>
+        <div className="texture-panel-heading">Baldosas</div>
         <TextureList textureList={this.state.textureListTile.reverse()} />
       </div>
     );

@@ -175,13 +175,13 @@ class WallTextureList extends Component {
   render() {
     return (
       <div className="texture-panel">
-        <div className="panel-heading">Adjust Wall</div>
+        <div className="panel-heading">Ajustar pared</div>
         <hr className="small-underline" />
-        <div className="texture-panel-heading">Patterns</div>
+        <div className="texture-panel-heading">Patrones</div>
         <TextureList textureList={this.state.textureList.reverse()} />
-        <div className="texture-panel-heading">Solids</div>
+        <div className="texture-panel-heading">Sólidos</div>
         <TextureList textureList={this.state.textureListSolid.reverse()} />
-        <div className="texture-panel-heading">Tiles</div>
+        <div className="texture-panel-heading">Baldosa</div>
         <TextureList textureList={this.state.textureListTile.reverse()} />
       </div>
     );
