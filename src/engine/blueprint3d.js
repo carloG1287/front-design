@@ -3494,7 +3494,7 @@ var Polygon = require('polygon')
                     }
                 });
                 floorplan.roomLoadedCallbacks.add(function () {
-                    // scope.reset();
+                    scope.reset();
                 });
             }
             /** */

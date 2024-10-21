@@ -129,8 +129,8 @@ class AppContenido extends Component {
       $("#zoom-in").dblclick(preventDefault);
       $("#zoom-out").dblclick(preventDefault);
 
-      // $("#reset-view").click(three.centerCamera);
-      // $("#reset-view").on("touchend", three.centerCamera);
+      $("#reset-view").click(three.centerCamera);
+      $("#reset-view").on("touchend", three.centerCamera);
 
       $("#move-left").click(function () {
         pan(directions.LEFT);
@@ -378,11 +378,11 @@ class AppContenido extends Component {
 
       $("#update-floorplan").click(floorplanUpdate);
       function reset() {
-        // $("texture-context-container").hide();
-        // $("#wallTextures").hide();
-        // $("#floorTexturesDiv").hide();
+        $("texture-context-container").hide();
+        $("#wallTextures").hide();
+        $("#floorTexturesDiv").hide();
       }
-      // stateChangeCallbacks.add(reset);
+      stateChangeCallbacks.add(reset);
 
       initLeftMenu();
 
@@ -557,9 +557,9 @@ class AppContenido extends Component {
       three.wallClicked.add(initTextureSelectors);
       three.floorClicked.add(floorClicked);
       three.wallClicked.add(initTextureSelectors);
-      // three.itemSelectedCallbacks.add(reset);
+      three.itemSelectedCallbacks.add(reset);
       three.wallClicked.add(initTextureSelectors);
-      // three.nothingClicked.add(reset);
+      three.nothingClicked.add(reset);
       three.wallClicked.add(initTextureSelectors);
       // sideMenu.stateChangeCallbacks.add(reset);
       three.wallClicked.add(initTextureSelectors);
@@ -672,24 +672,24 @@ class AppContenido extends Component {
         $(draw).click(function () {
           scope.floorplanner.setMode(BP3D.Floorplanner.floorplannerModes.DRAW);
         });
-        // $(draw).on("touchend", function () {
-        //   scope.floorplanner.setMode(BP3D.Floorplanner.floorplannerModes.DRAW);
-        // });
+        $(draw).on("touchend", function () {
+          scope.floorplanner.setMode(BP3D.Floorplanner.floorplannerModes.DRAW);
+        });
 
         $(remove).click(function () {
           scope.floorplanner.setMode(
             BP3D.Floorplanner.floorplannerModes.DELETE
           );
         });
-        // $(remove).on("touchend", function () {
-        //   scope.floorplanner.setMode(
-        //     BP3D.Floorplanner.floorplannerModes.DELETE
-        //   );
-        // });
+        $(remove).on("touchend", function () {
+          scope.floorplanner.setMode(
+            BP3D.Floorplanner.floorplannerModes.DELETE
+          );
+        });
       }
 
       this.updateFloorplanView = function () {
-        // scope.floorplanner.reset();
+        scope.floorplanner.reset();
       };
 
       this.handleWindowResize = function () {
@@ -850,18 +850,18 @@ class AppContenido extends Component {
 
     // set new state
     function handleWindowResize() {
-      // $(".sidebar").height(window.innerHeight);
-      // $("#add-items").height(window.innerHeight);
+      $(".sidebar").height(window.innerHeight);
+      $("#add-items").height(window.innerHeight);
     }
     handleWindowResize();
 
-    // function reset() {
-    //   $("texture-context-container").hide();
-    //   $("#wallTextures").hide();
-    //   $("#floorTexturesDiv").hide();
-    // }
+    function reset() {
+      $("texture-context-container").hide();
+      $("#wallTextures").hide();
+      $("#floorTexturesDiv").hide();
+    }
 
-    // reset();
+    reset();
     this.setState({ currentStateName: "Design" });
 
     //change mobx state-active-tab
