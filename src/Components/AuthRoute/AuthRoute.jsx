@@ -1,40 +1,47 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import TopBar from "../TopBar/TopBar.jsx";
-import Loading from '../Loading/Loading.jsx';
+import Loading from "../Loading/Loading.jsx";
 import { Route, Redirect } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import store from '../../InteriorDesignStore.js'
+import store from "../../InteriorDesignStore.js";
 
 @inject("store")
 @observer
 class AuthRoute extends Component {
   static propTypes = {
     path: PropTypes.string.isRequired,
-    component: PropTypes.node.isRequired,
-  }
+    component: PropTypes.elementType.isRequired, // Cambiado a elementType para componentes
+  };
 
   state = {
     nodeShouldBeRender: <Loading />,
-    isTopBarRender: false
-  }
+    isTopBarRender: false,
+  };
 
   handleAuth = () => {
     setTimeout(() => {
-      console.log(store.usuarioHaIniciadoSesion)
+      console.log(store.usuarioHaIniciadoSesion);
       if (store.usuarioHaIniciadoSesion) {
         this.setState({
           isTopBarRender: true,
-          nodeShouldBeRender: this.props.component
-        })
+          nodeShouldBeRender: React.createElement(this.props.component), // Crear elemento del componente
+        });
       } else {
         this.setState({
           isTopBarRender: false,
-          nodeShouldBeRender: <Redirect to={{ pathname: "/inicio-sesion", state: { from: window.navigator.pathname } }} />
-        })
+          nodeShouldBeRender: (
+            <Redirect
+              to={{
+                pathname: "/inicio-sesion",
+                state: { from: window.navigator.pathname },
+              }}
+            />
+          ),
+        });
       }
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   componentDidMount() {
     this.handleAuth();
@@ -46,14 +53,10 @@ class AuthRoute extends Component {
 
     return (
       <div style={{ width: "100%", height: "100%" }}>
-        {
-          isTopBarRender ? <TopBar /> : undefined
-        }
-        <Route path={path}>
-          {nodeShouldBeRender}
-        </Route>
+        {isTopBarRender ? <TopBar /> : undefined}
+        <Route path={path}>{nodeShouldBeRender}</Route>
       </div>
-    )
+    );
   }
 }
 

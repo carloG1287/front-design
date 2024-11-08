@@ -1,7 +1,7 @@
 // SERVER
 export const HOST_URL = "https://www.feldsparhomes.com/";
 export const BASE_URL = "https://www.feldsparhomes.com:8001/";
-export const BASE_URL_AUTH = "http://localhost:3001/";
+export const BASE_URL_AUTH = "http://localhost:3000/";
 export const DEFAULT_WALL_MAP = "5f0dde8ee5148d0ef82ff069";
 export const DEFAULT_FLOOR_MAP = "5f0dddf4e5148d0ef82ff066";
 
@@ -17,7 +17,7 @@ export const FIND = "find/";
 export const VIEW_MODEL = "view/"
 
 export const REGISTER = "register";
-export const LOGIN = "login";
+export const LOGIN = "auth/login";
 export const LOGOUT = "logout";
 export const UPLOAD_ASSET = "uploadAsset"
 export const UPDATE_ASSET_ENTRY = "updateAssetEntry"

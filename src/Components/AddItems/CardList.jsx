@@ -8,15 +8,13 @@ import $ from "jquery";
 @inject("store")
 @observer
 class CardList extends Component {
-
   componentDidMount() {
     $("#add-items")
       .find(".add-item")
       .hover(function (e) {
         $(".item-card-title").removeClass("active-title");
         $(this).find(".item-card-title").addClass("active-title");
-
-      })
+      });
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
@@ -41,14 +39,12 @@ class CardList extends Component {
             <Card.Img
               src={BASE_URL + ASSETS + item.imgUrl}
               className="item-card-img"
-            /> 
-            {/* Esto estara temporalmente */}
-            {/* <Card.ImgOverlay className="item-card-body">
+            />
+            <Card.ImgOverlay className="item-card-body">
               <Card.Body className="item-card-title-outer">
                 <div className="item-card-title">{item.name}</div>
               </Card.Body>
-            </Card.ImgOverlay> */}
-            {/* Esto estara temporalmente */}
+            </Card.ImgOverlay>
           </Card>
         ))}
       </div>

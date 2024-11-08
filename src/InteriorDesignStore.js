@@ -2,12 +2,9 @@ import { observable, action, computed } from "mobx";
 import { parseJwt } from "./Utils/Utils";
 
 class InteriorDesignStore {
-  @observable usuarioHaIniciadoSesion = parseJwt(localStorage.getItem("token"))
-    ?.username
-    ? true
-    : false;
-  @observable nombreDeUsuario =
-    parseJwt(localStorage.getItem("token"))?.username || "";
+  @observable usuarioHaIniciadoSesion = parseJwt(localStorage.getItem("token"))?.username ? true : false;
+  @observable nombreDeUsuario = parseJwt(localStorage.getItem("token"))?.username || "";
+  @observable correoUsuario = parseJwt(localStorage.getItem("token"))?.email || ""; // Añade el correo aquí
   @observable tokenDeAcceso = "";
   @observable tokenDeSesion = "";
   @observable moduloLogin = false;
@@ -17,8 +14,10 @@ class InteriorDesignStore {
   @observable moduloGuardarArchivo = false;
   @observable moduloCargarArchivo = false;
   @observable añadirManejadorDeClick = false;
+  @observable floorTexture = "";
+  @observable wallTexture = "";
 
-  //usuarioHaIniciadoSesion---------------------------------------------
+  // usuarioHaIniciadoSesion---------------------------------------------
   @action cambiarInicioDeSesion = (login) => {
     this.usuarioHaIniciadoSesion = login;
   };
@@ -27,7 +26,7 @@ class InteriorDesignStore {
     return this.usuarioHaIniciadoSesion;
   }
 
-  //nombreDeUsuario--------------------------------------------
+  // nombreDeUsuario--------------------------------------------
   @action cambiarNombreDeUsuario = (name) => {
     this.nombreDeUsuario = name;
   };
@@ -36,7 +35,16 @@ class InteriorDesignStore {
     return this.nombreDeUsuario;
   }
 
-  //tokenDeAcceso--------------------------------------------
+  // correoUsuario--------------------------------------------
+  @action cambiarCorreoUsuario = (correo) => { // Método para cambiar el correo
+    this.correoUsuario = correo;
+  };
+
+  @computed get obtenerCorreoUsuario() { // Método para obtener el correo
+    return this.correoUsuario;
+  }
+
+  // tokenDeAcceso--------------------------------------------
   @action cambiarTokenDeAcceso = (tokenDeAcceso) => {
     this.tokenDeAcceso = tokenDeAcceso;
   };
@@ -45,7 +53,7 @@ class InteriorDesignStore {
     return this.tokenDeAcceso;
   }
 
-  //tokenDeSesion--------------------------------------------
+  // tokenDeSesion--------------------------------------------
   @action cambiarTokenDeSesion = (token) => {
     this.tokenDeSesion = token;
   };
@@ -54,7 +62,7 @@ class InteriorDesignStore {
     return this.tokenDeSesion;
   }
 
-  //moduloLogin---------------------------------------------
+  // moduloLogin---------------------------------------------
   @action cambiarModuloLogin = (show) => {
     this.moduloLogin = show;
   };
@@ -63,7 +71,7 @@ class InteriorDesignStore {
     return this.moduloLogin;
   }
 
-  //moduloLogout---------------------------------------------
+  // moduloLogout---------------------------------------------
   @action cambiarModuloLogout = (show) => {
     this.moduloLogout = show;
   };
@@ -72,7 +80,7 @@ class InteriorDesignStore {
     return this.moduloLogout;
   }
 
-  //moduloInformacion---------------------------------------------
+  // moduloInformacion---------------------------------------------
   @action cambiarModuloInformacion = (show) => {
     this.moduloInformacion = show;
   };
@@ -81,7 +89,7 @@ class InteriorDesignStore {
     return this.moduloInformacion;
   }
 
-  //moduloRepetir---------------------------------------------
+  // moduloRepetir---------------------------------------------
   @action cambiarModuloRepetir = (show) => {
     this.moduloRepetir = show;
   };
@@ -90,7 +98,7 @@ class InteriorDesignStore {
     return this.moduloRepetir;
   }
 
-  //añadirManejadorDeClick---------------------------------------------
+  // añadirManejadorDeClick---------------------------------------------
   @action cambiarManejadorDeClick = (bool) => {
     this.añadirManejadorDeClick = bool;
   };
@@ -99,7 +107,7 @@ class InteriorDesignStore {
     return this.añadirManejadorDeClick;
   }
 
-  //Save File Modal---------------------------------------------
+  // Save File Modal---------------------------------------------
   @action cambiarModuloGuardarArchivo = (bool) => {
     this.moduloGuardarArchivo = bool;
   };
@@ -108,13 +116,29 @@ class InteriorDesignStore {
     return this.moduloGuardarArchivo;
   }
 
-  //Load File Modal---------------------------------------------
+  // Load File Modal---------------------------------------------
   @action cambiarModuloCargarArchivo = (bool) => {
     this.moduloCargarArchivo = bool;
   };
 
   @computed get mostrarModuloCargarArchivo() {
     return this.moduloCargarArchivo;
+  }
+
+  @action setFloorTexture = (texture) => {
+    this.floorTexture = texture;
+  };
+
+  @computed get obtenerFloorTexture() {
+    return this.floorTexture;
+  }
+  
+  @action setWallTexture = (texture) => {
+    this.wallTexture = texture;
+  };
+  
+  @computed get obtenerWallTexture() {
+    return this.wallTexture;
   }
 }
 

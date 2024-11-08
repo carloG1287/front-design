@@ -4,10 +4,11 @@ import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
 import { validateEmail, parseJwt } from "../../../Utils/Utils";
 import axios from "axios";
-import { BASE_URL_AUTH, USERS, LOGIN } from "../../../Constants.js";
+import { BASE_URL_AUTH, LOGIN } from "../../../Constants.js";
 import SmallAlert from "../../SmallAlert.jsx";
 import LargeAlert from "../../LargeAlert.jsx";
-import store from '../../../InteriorDesignStore.js'
+import store from "../../../InteriorDesignStore.js";
+import { withRouter } from "react-router-dom";
 
 @inject("store")
 @observer
@@ -32,7 +33,7 @@ class LoginForm extends Component {
   }
 
   handleLoginEmailChange(e) {
-    if (e.target.value === '') {
+    if (e.target.value === "") {
       this.setState({ loginEmailFormatError: true });
     } else {
       this.setState({ loginEmailFormatError: false });
@@ -45,8 +46,8 @@ class LoginForm extends Component {
   }
 
   handleLogin = () => {
-    store.cambiarInicioDeSesion(true)
-  }
+    store.cambiarInicioDeSesion(true);
+  };
 
   async handleLoginSubmit(e) {
     e.preventDefault();
@@ -57,7 +58,7 @@ class LoginForm extends Component {
     ) {
       this.setState({ isDisabled: true });
       const user = {
-        email: this.state.loginEmailValue,
+        identifier: this.state.loginEmailValue, // Puede ser correo o nombre de usuario
         password: this.state.loginPasswordValue,
       };
 
@@ -72,20 +73,20 @@ class LoginForm extends Component {
 
         const loggedInUser = parseJwt(res.data.token);
 
+        // Guarda el nombre de usuario y el correo en el store
         this.props.store.cambiarNombreDeUsuario(loggedInUser.username);
+        this.props.store.cambiarCorreoUsuario(loggedInUser.email); // Asegúrate de que esta función esté definida en el store
+
+        // Resto de las operaciones de inicio de sesión
         this.props.store.cambiarTokenDeAcceso(res.data.token);
         this.props.store.cambiarTokenDeSesion(res.data.token);
         this.props.store.cambiarInicioDeSesion(true);
-
         this.props.store.cambiarModuloLogin(false);
-
-        localStorage.setItem('token', res.data.token)
-
-        this.handleLogin()
-
-        return window.location.pathname = '/'
+        localStorage.setItem("token", res.data.token);
+        this.handleLogin();
+        this.props.history.push("/");
       } catch (e) {
-        if (user.email === 'astrid@gmail.com' && user.password === 'astrid') {
+        if (user.email === "astrid@gmail.com" && user.password === "astrid") {
           this.setState({
             isError: false,
             isEmailExists: true,
@@ -93,20 +94,29 @@ class LoginForm extends Component {
             isDisabled: true,
           });
 
-          const loggedInUser = parseJwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
+          const loggedInUser = parseJwt(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM"
+          );
 
           store.cambiarNombreDeUsuario(loggedInUser.username);
-          store.cambiarTokenDeAcceso("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
-          store.cambiarTokenDeSesion("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM");
+          store.cambiarTokenDeAcceso(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM"
+          );
+          store.cambiarTokenDeSesion(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM"
+          );
           store.cambiarInicioDeSesion(true);
 
           this.props.store.cambiarModuloLogin(false);
 
-          localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM')
+          localStorage.setItem(
+            "token",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFzdHJpZCIsImlhdCI6MTcyODY2OTE3NH0.vgrTmpTwIAsaq2uCrje8PCyX92N7WC12dANDYslTbNM"
+          );
 
-          this.handleLogin()
+          this.handleLogin();
 
-          return window.location.pathname = '/'
+          this.props.history.push("/");
         }
         if (e.response === undefined) {
           console.log(e);
@@ -174,7 +184,10 @@ class LoginForm extends Component {
               className="login-form-input"
             />
           </div>
-          <a href="/olvide-mi-contrasena" style={{ textAlign: 'end', margin: '0 0 10px 0' }}>
+          <a
+            href="/olvide-mi-contrasena"
+            style={{ textAlign: "end", margin: "0 0 10px 0" }}
+          >
             Olvidé mi contraseña
           </a>
           <Button
@@ -182,24 +195,36 @@ class LoginForm extends Component {
             className="login-submit-button"
             disabled={this.state.isDisabled}
             type="submit"
-            style={{ marginBottom: '-10px' }}
+            style={{ marginBottom: "-10px" }}
           >
             Iniciar Sesión
           </Button>
         </form>
 
         {!this.state.isEmailExists && (
-          <LargeAlert message="Correo electronico es incorrecto" variant="danger" style={{ marginTop: '-10px' }} />
+          <LargeAlert
+            message="Correo electronico es incorrecto"
+            variant="danger"
+            style={{ marginTop: "-10px" }}
+          />
         )}
         {this.state.isError && (
-          <LargeAlert message="Ha ocurrido un error" variant="danger" style={{ marginTop: '-10px' }} />
+          <LargeAlert
+            message="Ha ocurrido un error"
+            variant="danger"
+            style={{ marginTop: "-10px" }}
+          />
         )}
         {!this.state.isPasswordCorrect && (
-          <LargeAlert message="Contrasena incorrecta" variant="danger" style={{ marginTop: '-10px' }} />
+          <LargeAlert
+            message="Contrasena incorrecta"
+            variant="danger"
+            style={{ marginTop: "-10px" }}
+          />
         )}
       </div>
     );
   }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);

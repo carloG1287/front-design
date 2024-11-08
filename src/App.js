@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Homepage from "./Components/Homepage.jsx";
 import { inject, observer } from "mobx-react";
 import AuthRoute from "./Components/AuthRoute/AuthRoute.jsx";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Login from "./Components/Login.jsx";
 import Register from "./Components/Register.jsx";
 import Forget from "./Components/Forget.jsx";
@@ -22,8 +22,12 @@ class App extends Component {
           <Route path="/inicio-sesion" component={Login} />
           <Route path="/olvide-mi-contrasena" component={Forget} />
           <Route path="/registro" component={Register} />
-          <AuthRoute path="/" component={<Homepage />} />
-          <AuthRoute path="*" component={<Homepage />} />
+          
+          {/* Rutas protegidas */}
+          <AuthRoute exact path="/" component={Homepage} />
+          
+          {/* Ruta para cualquier otra página no encontrada */}
+          <Redirect to="/" />
         </Switch>
       </Router>
     );

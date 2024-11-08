@@ -24,12 +24,18 @@ class FloorTextureList extends Component {
       textureListWood: [],
       textureListMarble: [],
       textureListTile: [],
+      selectedFloorTexture: null,
     };
 
     this.getUserList = this.getUserList.bind(this);
     this.getFreeList = this.getFreeList.bind(this);
     this.clearList = this.clearList.bind(this);
   }
+  // Manejador para actualizar el tipo de suelo seleccionado
+  handleTextureSelection = (textureName) => {
+    this.setState({ selectedFloorTexture: textureName });
+    this.props.store.setFloorTexture(textureName); // Guardamos la textura seleccionada en el store
+  };
 
   clearList() {
     if (this.state.isLoggedIn === false) {
@@ -178,12 +184,18 @@ class FloorTextureList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.obtenerInicioDeSesion && prevState.isLoggedIn === false) {
+    if (
+      this.props.store.obtenerInicioDeSesion &&
+      prevState.isLoggedIn === false
+    ) {
       this.setState({ isLoggedIn: true });
       this.clearList();
       this.getUserList();
     }
-    if (this.props.store.obtenerInicioDeSesion === false && prevState.isLoggedIn) {
+    if (
+      this.props.store.obtenerInicioDeSesion === false &&
+      prevState.isLoggedIn
+    ) {
       this.setState({ isLoggedIn: false });
       this.clearList();
       this.getFreeList();
@@ -196,11 +208,20 @@ class FloorTextureList extends Component {
         <div className="panel-heading">Ajustar piso</div>
         <hr className="small-underline" />
         <div className="texture-panel-heading">Madera</div>
-        <TextureList textureList={this.state.textureListWood.reverse()} />
+        <TextureList
+          textureList={this.state.textureListWood.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
         <div className="texture-panel-heading">Mármol</div>
-        <TextureList textureList={this.state.textureListMarble.reverse()} />
+        <TextureList
+          textureList={this.state.textureListMarble.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
         <div className="texture-panel-heading">Baldosas</div>
-        <TextureList textureList={this.state.textureListTile.reverse()} />
+        <TextureList
+          textureList={this.state.textureListTile.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
       </div>
     );
   }

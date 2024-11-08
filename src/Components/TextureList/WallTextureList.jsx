@@ -31,6 +31,11 @@ class WallTextureList extends Component {
     this.clearList = this.clearList.bind(this);
   }
 
+  // Manejador para actualizar la textura de pared seleccionada en el store
+  handleTextureSelection = (textureName) => {
+    this.props.store.setWallTexture(textureName); // Guardamos la textura seleccionada en el store
+  };
+
   clearList() {
     if (this.state.isLoggedIn === false) {
       this.setState({
@@ -160,12 +165,18 @@ class WallTextureList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.obtenerInicioDeSesion && prevState.isLoggedIn === false) {
+    if (
+      this.props.store.obtenerInicioDeSesion &&
+      prevState.isLoggedIn === false
+    ) {
       this.setState({ isLoggedIn: true });
       this.clearList();
       this.getUserList();
     }
-    if (this.props.store.obtenerInicioDeSesion === false && prevState.isLoggedIn) {
+    if (
+      this.props.store.obtenerInicioDeSesion === false &&
+      prevState.isLoggedIn
+    ) {
       this.setState({ isLoggedIn: false });
       this.clearList();
       this.getFreeList();
@@ -178,11 +189,20 @@ class WallTextureList extends Component {
         <div className="panel-heading">Ajustar pared</div>
         <hr className="small-underline" />
         <div className="texture-panel-heading">Patrones</div>
-        <TextureList textureList={this.state.textureList.reverse()} />
+        <TextureList
+          textureList={this.state.textureList.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
         <div className="texture-panel-heading">Sólidos</div>
-        <TextureList textureList={this.state.textureListSolid.reverse()} />
+        <TextureList
+          textureList={this.state.textureListSolid.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
         <div className="texture-panel-heading">Baldosa</div>
-        <TextureList textureList={this.state.textureListTile.reverse()} />
+        <TextureList
+          textureList={this.state.textureListTile.reverse()}
+          onSelectTexture={this.handleTextureSelection}
+        />
       </div>
     );
   }

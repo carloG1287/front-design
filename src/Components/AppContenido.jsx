@@ -58,6 +58,8 @@ class AppContenido extends Component {
       añadirManejadorDeClick: false,
       currentStateName: "Design",
       blob: "",
+      userName: "",
+      userEmail: "",
     };
     this.engine = this.engine.bind(this);
     this.setDesignState = this.setDesignState.bind(this);
@@ -72,8 +74,39 @@ class AppContenido extends Component {
     this.handleLogoutShow = this.handleLogoutShow.bind(this);
     this.handleModalRepeat = this.handleModalRepeat.bind(this);
     this.handleModalInfo = this.handleModalInfo.bind(this);
+    this.generateReport = this.generateReport.bind(this);
+  }
+  async componentDidMount() {
+    await this.fetchAuthenticatedUser();
   }
 
+  fetchAuthenticatedUser = async () => {
+    try {
+      // Obtener el token de localStorage
+      const token = localStorage.getItem("authToken");
+
+      // Verificar que el token esté presente
+      if (!token) {
+        throw new Error("No se encontró token de autenticación");
+      }
+
+      // Hacer la solicitud al backend para obtener los datos del usuario
+      const response = await axios.get("/api/usuario/autenticado", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Enviar el token en el encabezado de autorización
+        },
+      });
+
+      // Actualizar el estado con los datos del usuario
+      const { name, email } = response.data;
+      this.setState({
+        userName: name,
+        userEmail: email,
+      });
+    } catch (error) {
+      console.error("Error al obtener los datos del usuario:", error);
+    }
+  };
   saveFile() {
     if (this.state.blueprint3d.model !== undefined) {
       var data = this.state.blueprint3d.model.exportSerialized();
@@ -107,6 +140,202 @@ class AppContenido extends Component {
   /*
    * Camera Buttons
    */
+
+  generateReport = async () => {
+    // Información General del Reporte
+    const softwareName = "Office Interior Design";
+    const userName =
+      this.props.store.obtenerNombreDeUsuario || "[Nombre no disponible]";
+    const userEmail =
+      this.props.store.obtenerCorreoUsuario || "[Correo no disponible]";
+    const reportDate = new Date().toLocaleDateString();
+
+    // Cantidad de Objetos en el Canvas
+    const objectCounts = {
+      chairs: 0,
+      tables: 0,
+      desks: 0,
+      sofas: 0,
+      lamps: 0,
+      shelves: 0,
+      plants: 0,
+      rugs: 0,
+      kitchenItems: 0,
+      architecturalElements: 0,
+      officeFurniture: 0,
+      others: 0,
+    };
+
+    // Acceso al tipo de piso y pared
+    const floorType =
+      this.props.store.obtenerFloorTexture || "[Tipo de piso no disponible]";
+    const wallType =
+      this.props.store.obtenerWallTexture || "[Tipo de pared no disponible]";
+
+    console.log("Datos del piso y pared seleccionados:");
+    console.log("Tipo de piso almacenado en el store:", floorType);
+    console.log("Tipo de pared almacenado en el store:", wallType);
+
+    // Mapear tipos numéricos a categorías
+    const typeMapping = {
+      1: "chairs",
+      2: "tables",
+      3: "desks",
+      4: "sofas",
+      5: "lamps",
+      6: "shelves",
+      7: "plants",
+      8: "rugs",
+      9: "kitchenItems",
+      10: "architecturalElements",
+      11: "officeFurniture",
+    };
+
+    // Mapear nombres específicos de objetos a categorías
+    const nameMapping = {
+      "Arm Chair": "chairs",
+      Ottoman: "chairs",
+      "White Chair": "chairs",
+      "Red Chair": "chairs",
+      Bench: "chairs",
+      "Cube Armchair": "chairs",
+      Stool: "chairs",
+      "Wooden Stool": "chairs",
+      "Brown Rug": "rugs",
+      "Blue Rug": "rugs",
+      Laptop: "officeFurniture",
+      "TV Unit": "officeFurniture",
+      "Beige Leather Panel": "officeFurniture",
+      "TV Unit B": "officeFurniture",
+      "Molding Wall Panel": "officeFurniture",
+      "Round Mirror": "officeFurniture",
+      "Mirror - Escapade": "officeFurniture",
+      Easel: "officeFurniture",
+      "Cosmetic Set": "officeFurniture",
+      "Airplane Toy": "officeFurniture",
+      "Rocket Toy": "officeFurniture",
+      "Duck Toy": "officeFurniture",
+      "Elephant Figurine": "officeFurniture",
+      Vase: "officeFurniture",
+      "Ornamental Horn": "officeFurniture",
+      "Vinta Clock": "officeFurniture",
+      Shelves: "officeFurniture",
+      "Wall Shelf": "officeFurniture",
+      Rack: "officeFurniture",
+      "Round Table": "officeFurniture",
+      Worktable: "officeFurniture",
+      "Drawing Table": "officeFurniture",
+      "Study Table": "officeFurniture",
+      Cabinet: "officeFurniture",
+      "Sliding Wardrobe": "officeFurniture",
+      "Cupboard and Rack": "officeFurniture",
+      "Cupboard and Shelf": "officeFurniture",
+      Wardrobe: "officeFurniture",
+      Curtain: "officeFurniture",
+      "Hanging Light": "lamps",
+      "Table Lamp": "lamps",
+      "Luminaires Black Light": "lamps",
+      "Luminaires White Light": "lamps",
+      "Sconce Light Black": "lamps",
+      "Fridge Black": "kitchenItems",
+      "Fridge White": "kitchenItems",
+      "Kitchen Stove and Sink": "kitchenItems",
+      "Kitchen Island": "kitchenItems",
+      "Kitchen Drawer": "kitchenItems",
+      "Kitchen Locker": "kitchenItems",
+      "Kitchen Counter": "kitchenItems",
+      "Kitchen Table": "kitchenItems",
+      "Dining Table": "kitchenItems",
+      Window: "architecturalElements",
+      Doorway: "architecturalElements",
+      "Sliding Window": "architecturalElements",
+      "Black Window": "architecturalElements",
+      "Closed Door (Inverted)": "architecturalElements",
+      Stairs: "architecturalElements",
+      "Stairs (Inverted)": "architecturalElements",
+      "Stair Case": "architecturalElements",
+      "Window - Rectangular": "architecturalElements",
+      "Window - Rectangular (Black)": "architecturalElements",
+      "Balcony Railing": "architecturalElements",
+      "Balcony Railing 2": "architecturalElements",
+    };
+
+    const unmappedTypes = new Set();
+
+    // Recorre cada objeto y cuenta según el tipo o el nombre
+    this.state.blueprint3d.model.scene.items.forEach((item) => {
+      const itemType = item.metadata.itemType;
+      const itemName = item.metadata.itemName;
+
+      if (nameMapping[itemName]) {
+        const category = nameMapping[itemName];
+        objectCounts[category]++;
+      } else if (typeMapping[itemType]) {
+        const category = typeMapping[itemType];
+        objectCounts[category]++;
+      } else {
+        objectCounts.others++;
+        unmappedTypes.add(itemType);
+      }
+      console.log("Item metadata:", item.metadata);
+    });
+
+    if (unmappedTypes.size > 0) {
+      console.log("Tipos de itemType no mapeados:", Array.from(unmappedTypes));
+    }
+
+    const totalObjects = Object.values(objectCounts).reduce((a, b) => a + b, 0);
+    const materialsUsed = totalObjects + 2; // La suma de todos los objetos + 2 para incluir piso y pared
+
+    const wallCount = this.state.blueprint3d.model.floorplan.walls.length;
+    const dimensions = this.state.blueprint3d.model.floorplan.getDimensions
+      ? JSON.stringify(this.state.blueprint3d.model.floorplan.getDimensions())
+      : "[Dimensiones no disponibles]";
+
+    // Formatear el reporte
+    const reportContent = `
+      Información General del Reporte
+      - Nombre del Software: ${softwareName}
+      - Nombre del Usuario: ${userName || "[Nombre no disponible]"}
+      - Correo Electrónico del Usuario: ${userEmail}
+      - Fecha de Generación del Reporte: ${reportDate}
+    
+    Cantidad de Objetos en el Canvas
+    - Sillas: ${objectCounts.chairs}
+    - Lámparas: ${objectCounts.lamps}
+    - Alfombras: ${objectCounts.rugs}
+    - Artículos de Cocina: ${objectCounts.kitchenItems}
+    - Elementos Arquitectónicos: ${objectCounts.architecturalElements}
+    - Mobiliario de Oficina: ${objectCounts.officeFurniture}
+    - Otros Objetos: ${objectCounts.others}
+  
+    Resumen de Objetos
+    - Total de Sillas: ${objectCounts.chairs}
+    - Total de Lámparas: ${objectCounts.lamps}
+    - Total de Alfombras: ${objectCounts.rugs}
+    - Total de Artículos de Cocina: ${objectCounts.kitchenItems}
+    - Total de Elementos Arquitectónicos: ${objectCounts.architecturalElements}
+    - Total de Mobiliario de Oficina: ${objectCounts.officeFurniture}
+    - Total General de Todos los Objetos: ${totalObjects}
+    
+    Información Adicional
+    - Dimensiones del Área Diseñada: ${dimensions}
+    - Materiales Utilizados: ${materialsUsed}
+    - Tipo de piso utilizado: ${floorType}
+    - Tipo de pared utilizada: ${wallType}
+    - Cantidad de paredes utilizadas: ${wallCount}
+      `;
+
+    // Crear un archivo de texto y descargar
+    const blob = new Blob([reportContent], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "reporte_diseño.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   cameraButtons(blueprint3d) {
     var orbitControls = blueprint3d.three.controls;
     var three = blueprint3d.three;
@@ -873,7 +1102,10 @@ class AppContenido extends Component {
       this.props.store.cambiarManejadorDeClick(false);
       this.initItems(this.state.blueprint3d, this.setDesignState);
     }
-    if (this.props.añadirManejadorDeClick === false && prevProps.añadirManejadorDeClick) {
+    if (
+      this.props.añadirManejadorDeClick === false &&
+      prevProps.añadirManejadorDeClick
+    ) {
       this.setState({ añadirManejadorDeClick: false });
     }
   }
@@ -884,7 +1116,6 @@ class AppContenido extends Component {
       <div className="horizontal-container">
         {/* Left Column */}
 
-
         <div id="texture-context-container">
           {/* Context Menu */}
           <div id="context-menu">
@@ -892,12 +1123,16 @@ class AppContenido extends Component {
           </div>
           {/* Floor Textures */}
           <div id="floorTexturesDiv" style={{ display: "none" }}>
-            <FloorTextureList usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+            <FloorTextureList
+              usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+            />
           </div>
 
           {/* Wall Textures */}
           <div id="wallTextures" style={{ display: "none" }}>
-            <WallTextureList usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+            <WallTextureList
+              usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+            />
           </div>
         </div>
         {/* End Left Column */}
@@ -973,12 +1208,11 @@ class AppContenido extends Component {
             </div>
           </div>
 
-
           {/*2D Floorplanner */}
           <div id="floorplanner">
             <canvas id="floorplanner-canvas"></canvas>
             <div id="floorplanner-controls">
-              {/* <Button
+              <Button
                 variant="secondary"
                 size="sm"
                 className="icon-text-button"
@@ -1010,7 +1244,7 @@ class AppContenido extends Component {
                   <FaTrashAlt />
                 </span>
                 <span className="text-centre">Delete Walls</span>
-              </Button> */}
+              </Button>
 
               <Button
                 variant="info"
@@ -1032,7 +1266,14 @@ class AppContenido extends Component {
           <div id="add-items">
             <Tabs
               variant="pills"
-              style={{ display: 'flex', flexDirection: 'column', width: '100px', position: 'absolute', right: '100px', top: '100px' }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100px",
+                position: "absolute",
+                right: "100px",
+                top: "100px",
+              }}
               id="controlled-tab-example"
               activeKey={this.state.key}
               onSelect={(k) => {
@@ -1043,23 +1284,35 @@ class AppContenido extends Component {
                 <CardListSofa usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
               </Tab> */}
               <Tab eventKey="chair" title="Sillas">
-                <CardListChair usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+                <CardListChair
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
               </Tab>
               <Tab eventKey="rug" title="Alfombras">
-                <CardListRug usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+                <CardListRug
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
               </Tab>
               <Tab eventKey="misc" title="Oficina personal y corporativa">
-                <CardListMisc usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+                <CardListMisc
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
               </Tab>
               <Tab eventKey="light" title="Luces">
-                <CardListLight usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+                <CardListLight
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
               </Tab>
-              {/* <Tab eventKey="kitchen" title="Kitchen">
-                <CardListKitchen usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
+              <Tab eventKey="kitchen" title="Kitchen">
+                <CardListKitchen
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
               </Tab>
               <Tab eventKey="arch" title="Architectural">
-                <CardListArch usuarioHaIniciadoSesion={store.obtenerInicioDeSesion} />
-              </Tab> */}
+                <CardListArch
+                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+                />
+              </Tab>
             </Tabs>
           </div>
           <div className="menu">
@@ -1072,7 +1325,7 @@ class AppContenido extends Component {
                   >
                     <div className="icons">
                       <div className="iconWrapper">
-                        <FaCube size='25px' />
+                        <FaCube size="25px" />
                       </div>
                     </div>
                   </OverlayTrigger>
@@ -1084,7 +1337,7 @@ class AppContenido extends Component {
                   >
                     <div className="icons">
                       <div className="iconWrapper">
-                        <FaPenFancy size='25px' />
+                        <FaPenFancy size="25px" />
                       </div>
                     </div>
                   </OverlayTrigger>
@@ -1096,26 +1349,38 @@ class AppContenido extends Component {
                   >
                     <div className="icons">
                       <div className="iconWrapper">
-                        <FaPlus size='25px' />
+                        <FaPlus size="25px" />
                       </div>
                     </div>
                   </OverlayTrigger>
                 </li>
                 <li id="items_tab">
-                  <img src="./logo.png" className="top-bar-logo" alt="" style={{ width: '100px', height: '100px', margin: '-5px 10px 0 10px' }} />
+                  <img
+                    src="./logo.png"
+                    className="top-bar-logo"
+                    alt=""
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      margin: "-5px 10px 0 10px",
+                    }}
+                  />
                 </li>
-                <li style={{ display: 'none' }}>
+                <li style={{ display: "none" }}>
                   <OverlayTrigger
                     placement="right"
                     overlay={<Tooltip>Repetir plano</Tooltip>}
-                  >  
+                  >
                     <Button
-                      className='repeatButton'
+                      className="repeatButton"
                       onClick={this.handleModalRepeat}
                     >
-                      <div className="icons" id='new'>
-                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
-                          <FaRedo size='25px' />
+                      <div className="icons" id="new">
+                        <div
+                          className="iconWrapper"
+                          style={{ margin: 0, padding: 0 }}
+                        >
+                          <FaRedo size="25px" />
                         </div>
                       </div>
                     </Button>
@@ -1125,14 +1390,17 @@ class AppContenido extends Component {
                   <OverlayTrigger
                     placement="right"
                     overlay={<Tooltip>Repetir plano</Tooltip>}
-                  >  
+                  >
                     <Button
-                      className='repeatButton'
+                      className="repeatButton"
                       onClick={this.handleModalRepeat}
                     >
-                      <div className="icons" id='new'>
-                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
-                          <FaRedo size='25px' />
+                      <div className="icons" id="new">
+                        <div
+                          className="iconWrapper"
+                          style={{ margin: 0, padding: 0 }}
+                        >
+                          <FaRedo size="25px" />
                         </div>
                       </div>
                     </Button>
@@ -1145,14 +1413,17 @@ class AppContenido extends Component {
                   <OverlayTrigger
                     placement="right"
                     overlay={<Tooltip>Información</Tooltip>}
-                  > 
+                  >
                     <Button
-                      className='repeatButton'
+                      className="repeatButton"
                       onClick={this.handleModalInfo}
                     >
-                      <div className="icons" id='new'>
-                        <div className="iconWrapper" style={{ margin: 0, padding: 0 }}>
-                          <FaInfoCircle size='25px' />
+                      <div className="icons" id="new">
+                        <div
+                          className="iconWrapper"
+                          style={{ margin: 0, padding: 0 }}
+                        >
+                          <FaInfoCircle size="25px" />
                         </div>
                       </div>
                     </Button>
@@ -1162,7 +1433,17 @@ class AppContenido extends Component {
                   <Button
                     variant="outline-dark"
                     className="top-bar-login-button"
-                    style={{ position: 'absolute', top: '10px', right: 0 }}
+                    style={{ position: "absolute", top: "10px", right: 150 }}
+                    onClick={this.generateReport}
+                  >
+                    Generar Reporte
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    variant="outline-dark"
+                    className="top-bar-login-button"
+                    style={{ position: "absolute", top: "10px", right: 0 }}
                     onClick={this.handleLogoutShow}
                   >
                     Salir
