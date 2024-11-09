@@ -2,14 +2,13 @@ import "../../../App.css";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
-import { FaEnvelope, FaExclamation, FaKey, FaQuestion, FaUser } from "react-icons/fa";
 import {
   validateEmail,
   validatePassword,
   validateUsername,
 } from "../../../Utils/Utils";
 import axios from "axios";
-import { BASE_URL_AUTH, USERS, REGISTER } from "../../../Constants.js";
+import { BASE_URL_AUTH, USERS } from "../../../Constants.js";
 import LargeAlert from "../../LargeAlert.jsx";
 import SmallAlert from "../../SmallAlert";
 
@@ -34,105 +33,105 @@ class SignupForm extends Component {
       signupAnswerFormatError: false,
 
       isDisabled: true,
-
       isRegistered: false,
       isEmailExists: false,
       isError: false,
     };
+  }
 
-    this.handleSignupUsernameChange = this.handleSignupUsernameChange.bind(
-      this
+  // Función para actualizar el estado de `isDisabled` en base a los errores
+  updateDisabledState = () => {
+    const {
+      signupUsernameFormatError,
+      signupEmailFormatError,
+      signupPasswordFormatError,
+      signupPasswordConfirmationFormatError,
+      signupQuestionFormatError,
+      signupAnswerFormatError,
+    } = this.state;
+
+    this.setState({
+      isDisabled:
+        signupUsernameFormatError ||
+        signupEmailFormatError ||
+        signupPasswordFormatError ||
+        signupPasswordConfirmationFormatError ||
+        signupQuestionFormatError ||
+        signupAnswerFormatError,
+    });
+  };
+
+  handleSignupUsernameChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupUsernameValue: value,
+        signupUsernameFormatError: !validateUsername(value),
+      },
+      this.updateDisabledState
     );
-    this.handleSignupEmailChange = this.handleSignupEmailChange.bind(this);
-    this.handleSignupPasswordChange = this.handleSignupPasswordChange.bind(
-      this
+  };
+
+  handleSignupEmailChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupEmailValue: value,
+        signupEmailFormatError: !validateEmail(value),
+      },
+      this.updateDisabledState
     );
-    this.handleSignupSubmit = this.handleSignupSubmit.bind(this);
-  }
+  };
 
-  handleSignupUsernameChange(e) {
-    if (!validateUsername(e.target.value)) {
-      this.setState({ signupUsernameFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupUsernameFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupUsernameValue: e.target.value });
-  }
+  handleSignupPasswordChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupPasswordValue: value,
+        signupPasswordFormatError: !validatePassword(value),
+      },
+      this.updateDisabledState
+    );
+  };
 
-  handleSignupEmailChange(e) {
-    if (!validateEmail(e.target.value)) {
-      this.setState({ signupEmailFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupEmailFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupEmailValue: e.target.value });
-  }
+  handleSignupPasswordConfirmationChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupPasswordConfirmationValue: value,
+        signupPasswordConfirmationFormatError:
+          this.state.signupPasswordValue !== value,
+      },
+      this.updateDisabledState
+    );
+  };
 
-  handleSignupPasswordChange(e) {
-    if (!validatePassword(e.target.value)) {
-      this.setState({ signupPasswordFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupPasswordFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupPasswordValue: e.target.value });
-  }
+  handleSignupQuestionChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupQuestionValue: value,
+        signupQuestionFormatError: value === "",
+      },
+      this.updateDisabledState
+    );
+  };
 
-  handleSignupPasswordConfirmationChange(e) {
-    if (this.signupPasswordValue === e.target.value) {
-      this.setState({ signupPasswordConfirmationFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupPasswordConfirmationFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupPasswordConfirmationValue: e.target.value });
-  }
+  handleSignupAnswerChange = (e) => {
+    const value = e.target.value;
+    this.setState(
+      {
+        signupAnswerValue: value,
+        signupAnswerFormatError: value === "",
+      },
+      this.updateDisabledState
+    );
+  };
 
-  handleSignupQuestionChange(e) {
-    if (e.target.value === '') {
-      this.setState({ signupQuestionFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupQuestionFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupQuestionValue: e.target.value });
-  }
-
-  handleSignupAnswerChange(e) {
-    if (e.target.value === '') {
-      this.setState({ signupAnswerFormatError: true });
-      this.setState({ isDisabled: true })
-    } else {
-      this.setState({ signupAnswerFormatError: false });
-      this.setState({ isDisabled: false })
-    }
-    this.setState({ signupAnswerValue: e.target.value });
-  }
-  async handleSignupSubmit(e) {
+  handleSignupSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !this.state.signupUsernameFormatError &&
-      !this.state.signupEmailFormatError &&
-      !this.state.signupPasswordFormatError &&
-      !this.state.signupQuestionFormatError &&
-      !this.state.signupAnswerFormatError &&
-      !this.state.signupPasswordConfirmationFormatError &&
-      this.state.signupUsernameValue !== "" &&
-      this.state.signupEmailValue !== "" &&
-      this.state.signupPasswordValue !== "" && 
-      this.state.signupQuestionValue !== "" && 
-      this.state.signupAnswerValue !== "" &&
-      this.state.signupPasswordConfirmationValue === this.state.signupPasswordValue
-    ) {
-      this.setState({ isDisabled: true });
+    if (!this.state.isDisabled) {
       const user = {
         name: this.state.signupUsernameValue,
         username: this.state.signupUsernameValue,
@@ -140,64 +139,45 @@ class SignupForm extends Component {
         password: this.state.signupPasswordValue,
         password_confirmation: this.state.signupPasswordConfirmationValue,
         security_question: this.state.signupQuestionValue,
-        security_answer: this.state.signupAnswerValue
+        security_answer: this.state.signupAnswerValue,
       };
+
       try {
-        await axios.post(BASE_URL_AUTH + USERS, user);
+        await axios.post(`${BASE_URL_AUTH}${USERS}`, user);
         this.setState({
           isError: false,
           isEmailExists: false,
           isDisabled: true,
           isRegistered: true,
         });
-
-        return window.location.pathname = '/inicio-sesion' 
+        window.location.pathname = "/inicio-sesion";
       } catch (e) {
-        if (e.response === undefined) {
-          this.setState({
-            isError: true,
-            isEmailExists: false,
-            isDisabled: true,
-          });
-        } else if (e.response.status === 403) {
-          this.setState({
-            isError: false,
-            isEmailExists: true,
-            isDisabled: false,
-          });
+        if (e.response) {
+          if (e.response.status === 403) {
+            this.setState({ isEmailExists: true });
+          } else {
+            this.setState({ isError: true });
+          }
         } else {
-          this.setState({
-            isError: true,
-            isEmailExists: false,
-            isDisabled: false,
-          });
+          this.setState({ isError: true });
         }
       }
     }
-  }
+  };
 
   render() {
     return (
       <div className="vertical-container">
-        <form
-          className="login-form"
-          onSubmit={(e) => {
-            this.handleSignupSubmit(e);
-          }}
-        >
+        <form className="login-form" onSubmit={this.handleSignupSubmit}>
           {this.state.signupUsernameFormatError && (
             <SmallAlert message="Usuario inválido" variant="danger" />
           )}
           <div className="login-form-input-space">
             <input
               placeholder="Usuario"
-              variant="secondary"
-              size="sm"
               type="text"
               value={this.state.signupUsernameValue}
-              onChange={(e) => {
-                this.handleSignupUsernameChange(e);
-              }}
+              onChange={this.handleSignupUsernameChange}
               className="login-form-input"
             />
           </div>
@@ -207,71 +187,61 @@ class SignupForm extends Component {
           <div className="login-form-input-space">
             <input
               placeholder="Correo electrónico"
-              variant="secondary"
-              size="sm"
               type="email"
               value={this.state.signupEmailValue}
-              onChange={(e) => {
-                this.handleSignupEmailChange(e);
-              }}
+              onChange={this.handleSignupEmailChange}
               className="login-form-input"
             />
           </div>
           <div className="login-form-input-space">
             <input
               placeholder="Contraseña"
-              variant="secondary"
-              size="sm"
               type="password"
               value={this.state.signupPasswordValue}
-              onChange={(e) => {
-                this.handleSignupPasswordChange(e);
-              }}
+              onChange={this.handleSignupPasswordChange}
               className="login-form-input"
             />
           </div>
+          {this.state.signupPasswordFormatError && (
+            <SmallAlert
+              message="Contraseña inválida: Debe tener al menos 8 caracteres, incluir letras, números y caracteres especiales."
+              variant="danger"
+            />
+          )}
           <div className="login-form-input-space">
             <input
               placeholder="Confirmar contraseña"
-              variant="secondary"
-              size="sm"
               type="password"
               value={this.state.signupPasswordConfirmationValue}
-              onChange={(e) => {
-                this.handleSignupPasswordConfirmationChange(e);
-              }}
+              onChange={this.handleSignupPasswordConfirmationChange}
               className="login-form-input"
             />
           </div>
-          {(this.state.signupPasswordFormatError || this.state.signupPasswordConfirmationFormatError) && (
-            <SmallAlert message="Contraseñas invalida" variant="danger" />
+          {this.state.signupPasswordConfirmationFormatError && (
+            <SmallAlert
+              message="Las contraseñas no coinciden"
+              variant="danger"
+            />
           )}
           <div className="login-form-input-space">
-            <select 
-              className="login-form-input" 
-              variant="secundary"
+            <select
+              className="login-form-input"
               value={this.state.signupQuestionValue}
-              onChange={(e) => {
-                this.handleSignupQuestionChange(e);
-              }}
+              onChange={this.handleSignupQuestionChange}
             >
-              <option className="options">¿Cuál es el nombre de su primera mascota?</option>
-              <option className="options">¿Cuál es el segundo nombre de su madre?</option>
-              <option className="options">¿En qué ciudad nació usted?</option>
-              <option className="options">¿En qué año termino su carrera?</option>
-              <option className="options">¿Quién es su profesor de seminario favorito?</option>
+              <option>¿Cuál es el nombre de su primera mascota?</option>
+              <option>¿Cuál es el segundo nombre de su madre?</option>
+              <option>¿En qué ciudad nació usted?</option>
+              <option>¿En qué año terminó su carrera?</option>
+              <option>¿Quién es su profesor de seminario favorito?</option>
             </select>
           </div>
           <div className="login-form-input-space">
             <input
               placeholder="Respuesta de seguridad"
-              variant="secondary"
-              size="sm"
               type="text"
               value={this.state.signupAnswerValue}
-              onChange={(e) => {
-                this.handleSignupAnswerChange(e);
-              }}
+              onChange={this.handleSignupAnswerChange}
               className="login-form-input"
             />
           </div>
@@ -286,13 +256,22 @@ class SignupForm extends Component {
         </form>
 
         {this.state.isRegistered && (
-          <LargeAlert message="Usuario registrado correctamente" variant="success" />
+          <LargeAlert
+            message="Usuario registrado correctamente"
+            variant="success"
+          />
         )}
         {this.state.isError && (
-          <LargeAlert message="Este usuario ha sido registrado" variant="danger" />
+          <LargeAlert
+            message="Error en el registro, intente nuevamente"
+            variant="danger"
+          />
         )}
         {this.state.isEmailExists && (
-          <LargeAlert message="Email already registered" variant="danger" />
+          <LargeAlert
+            message="El correo electrónico ya está registrado"
+            variant="danger"
+          />
         )}
       </div>
     );

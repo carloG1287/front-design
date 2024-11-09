@@ -4,9 +4,10 @@ export function validateEmail(email) {
 }
 
 export function validatePassword(password) {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-    return re.test(String(password));
-}
+    // La contraseña debe tener al menos 8 caracteres, incluyendo letras y números
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordRegex.test(password);
+  }
 
 export function validateUsername(name) {
     return name.length < 1 ? false : true

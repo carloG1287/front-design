@@ -33,7 +33,6 @@ import CardListSofa from "./AddItems/CardListSofa.jsx";
 import CardListChair from "./AddItems/CardListChair.jsx";
 import CardListRug from "./AddItems/CardListRug.jsx";
 import CardListMisc from "./AddItems/CardListMisc.jsx";
-import CardListKitchen from "./AddItems/CardListKitchen.jsx";
 import CardListArch from "./AddItems/CardListArch.jsx";
 import CardListLight from "./AddItems/CardListLight.jsx";
 import FloorTextureList from "./TextureList/FloorTextureList.jsx";
@@ -43,6 +42,7 @@ import SaveButton from "./SaveLoadModal/SaveFile/SaveButton.jsx";
 import LoadButton from "./SaveLoadModal/LoadFile/LoadButton.jsx";
 import SaveModal from "./SaveLoadModal/SaveFile/SaveModal.jsx";
 import LoadModal from "./SaveLoadModal/LoadFile/LoadModal.jsx";
+import jsPDF from "jspdf";
 
 import { inject, observer } from "mobx-react";
 import ScreenCaptureButton from "./ScreenCaptureButton";
@@ -141,7 +141,7 @@ class AppContenido extends Component {
    * Camera Buttons
    */
 
-  generateReport = async () => {
+  generateReport = () => {
     // Información General del Reporte
     const softwareName = "Office Interior Design";
     const userName =
@@ -160,7 +160,6 @@ class AppContenido extends Component {
       shelves: 0,
       plants: 0,
       rugs: 0,
-      kitchenItems: 0,
       architecturalElements: 0,
       officeFurniture: 0,
       others: 0,
@@ -172,10 +171,6 @@ class AppContenido extends Component {
     const wallType =
       this.props.store.obtenerWallTexture || "[Tipo de pared no disponible]";
 
-    console.log("Datos del piso y pared seleccionados:");
-    console.log("Tipo de piso almacenado en el store:", floorType);
-    console.log("Tipo de pared almacenado en el store:", wallType);
-
     // Mapear tipos numéricos a categorías
     const typeMapping = {
       1: "chairs",
@@ -186,7 +181,6 @@ class AppContenido extends Component {
       6: "shelves",
       7: "plants",
       8: "rugs",
-      9: "kitchenItems",
       10: "architecturalElements",
       11: "officeFurniture",
     };
@@ -237,15 +231,6 @@ class AppContenido extends Component {
       "Luminaires Black Light": "lamps",
       "Luminaires White Light": "lamps",
       "Sconce Light Black": "lamps",
-      "Fridge Black": "kitchenItems",
-      "Fridge White": "kitchenItems",
-      "Kitchen Stove and Sink": "kitchenItems",
-      "Kitchen Island": "kitchenItems",
-      "Kitchen Drawer": "kitchenItems",
-      "Kitchen Locker": "kitchenItems",
-      "Kitchen Counter": "kitchenItems",
-      "Kitchen Table": "kitchenItems",
-      "Dining Table": "kitchenItems",
       Window: "architecturalElements",
       Doorway: "architecturalElements",
       "Sliding Window": "architecturalElements",
@@ -277,12 +262,7 @@ class AppContenido extends Component {
         objectCounts.others++;
         unmappedTypes.add(itemType);
       }
-      console.log("Item metadata:", item.metadata);
     });
-
-    if (unmappedTypes.size > 0) {
-      console.log("Tipos de itemType no mapeados:", Array.from(unmappedTypes));
-    }
 
     const totalObjects = Object.values(objectCounts).reduce((a, b) => a + b, 0);
     const materialsUsed = totalObjects + 2; // La suma de todos los objetos + 2 para incluir piso y pared
@@ -292,48 +272,34 @@ class AppContenido extends Component {
       ? JSON.stringify(this.state.blueprint3d.model.floorplan.getDimensions())
       : "[Dimensiones no disponibles]";
 
-    // Formatear el reporte
-    const reportContent = `
-      Información General del Reporte
-      - Nombre del Software: ${softwareName}
-      - Nombre del Usuario: ${userName || "[Nombre no disponible]"}
-      - Correo Electrónico del Usuario: ${userEmail}
-      - Fecha de Generación del Reporte: ${reportDate}
-    
-    Cantidad de Objetos en el Canvas
-    - Sillas: ${objectCounts.chairs}
-    - Lámparas: ${objectCounts.lamps}
-    - Alfombras: ${objectCounts.rugs}
-    - Artículos de Cocina: ${objectCounts.kitchenItems}
-    - Elementos Arquitectónicos: ${objectCounts.architecturalElements}
-    - Mobiliario de Oficina: ${objectCounts.officeFurniture}
-    - Otros Objetos: ${objectCounts.others}
-  
-    Resumen de Objetos
-    - Total de Sillas: ${objectCounts.chairs}
-    - Total de Lámparas: ${objectCounts.lamps}
-    - Total de Alfombras: ${objectCounts.rugs}
-    - Total de Artículos de Cocina: ${objectCounts.kitchenItems}
-    - Total de Elementos Arquitectónicos: ${objectCounts.architecturalElements}
-    - Total de Mobiliario de Oficina: ${objectCounts.officeFurniture}
-    - Total General de Todos los Objetos: ${totalObjects}
-    
-    Información Adicional
-    - Dimensiones del Área Diseñada: ${dimensions}
-    - Materiales Utilizados: ${materialsUsed}
-    - Tipo de piso utilizado: ${floorType}
-    - Tipo de pared utilizada: ${wallType}
-    - Cantidad de paredes utilizadas: ${wallCount}
-      `;
+    // Crear el PDF
+    const doc = new jsPDF();
 
-    // Crear un archivo de texto y descargar
-    const blob = new Blob([reportContent], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "reporte_diseño.txt";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Añadir contenido al PDF
+    doc.setFontSize(12);
+    doc.text(`Office Interior Design - Reporte`, 10, 10);
+    doc.text(`Generado el: ${reportDate}`, 10, 20);
+    doc.text(`Nombre de Usuario: ${userName}`, 10, 30);
+    doc.text(`Correo Electrónico: ${userEmail}`, 10, 40);
+
+    doc.text("Resumen de Objetos en el Canvas:", 10, 50);
+    let yPosition = 60;
+    Object.keys(objectCounts).forEach((key) => {
+      doc.text(`- ${key}: ${objectCounts[key]}`, 10, yPosition);
+      yPosition += 10;
+    });
+
+    doc.text(`Dimensiones del Área: ${dimensions}`, 10, yPosition + 10);
+    doc.text(`Tipo de Piso: ${floorType}`, 10, yPosition + 20);
+    doc.text(`Tipo de Pared: ${wallType}`, 10, yPosition + 30);
+    doc.text(
+      `Total de Materiales Utilizados: ${materialsUsed}`,
+      10,
+      yPosition + 40
+    );
+
+    // Descargar el PDF
+    doc.save("reporte_diseño.pdf");
   };
 
   cameraButtons(blueprint3d) {
@@ -1213,7 +1179,7 @@ class AppContenido extends Component {
             <canvas id="floorplanner-canvas"></canvas>
             <div id="floorplanner-controls">
               <Button
-                variant="secondary"
+                variant="info"
                 size="sm"
                 className="icon-text-button"
                 id="move"
@@ -1224,7 +1190,7 @@ class AppContenido extends Component {
                 <span className="text-centre">Move Walls</span>
               </Button>
               <Button
-                variant="secondary"
+                variant="info"
                 size="sm"
                 className="icon-text-button"
                 id="draw"
@@ -1235,10 +1201,10 @@ class AppContenido extends Component {
                 <span className="text-centre">Draw Walls</span>
               </Button>
               <Button
-                variant="secondary"
+                variant="info"
                 size="sm"
                 className="icon-text-button"
-                id="delete"
+                id="update-floorplan"
               >
                 <span className="icon-centre">
                   <FaTrashAlt />
@@ -1300,11 +1266,6 @@ class AppContenido extends Component {
               </Tab>
               <Tab eventKey="light" title="Luces">
                 <CardListLight
-                  usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
-                />
-              </Tab>
-              <Tab eventKey="kitchen" title="Kitchen">
-                <CardListKitchen
                   usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
                 />
               </Tab>

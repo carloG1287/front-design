@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 import "../../../App.css";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import SmallAlert from "../../SmallAlert.jsx";
-import store from '../../../InteriorDesignStore.js';
+import store from "../../../InteriorDesignStore.js";
 
 @inject("store")
 @observer
@@ -23,13 +24,15 @@ class ForgetForm extends Component {
       isEmailExists: true,
       isPasswordCorrect: true,
       isError: false,
-      showSmallAlert: false, // New state for showing SmallAlert
+      showSmallAlert: false, // Mostrar alerta pequeña
     };
 
     this.handleForgetUsername = this.handleForgetUsername.bind(this);
     this.handleForgetNewPassword = this.handleForgetNewPassword.bind(this);
-    this.handleForgetNewConfirmPassword = this.handleForgetNewConfirmPassword.bind(this);
-    this.handleForgetSecurityAnswer = this.handleForgetSecurityAnswer.bind(this);
+    this.handleForgetNewConfirmPassword =
+      this.handleForgetNewConfirmPassword.bind(this);
+    this.handleForgetSecurityAnswer =
+      this.handleForgetSecurityAnswer.bind(this);
   }
 
   async handleForgetUsername(e) {
@@ -37,8 +40,8 @@ class ForgetForm extends Component {
     this.setState({ forgetUsername: username });
 
     try {
-      const response = await axios.get(`http://localhost:3001/users/question?_username=${username}`);
-      
+      await axios.get(`http://localhost:3000/users/question/${username}`);
+
       if (response.status === 200 && response.data.question) {
         this.setState({
           securityQuestion: response.data.question,
@@ -66,27 +69,28 @@ class ForgetForm extends Component {
 
   handleLogin = () => {
     store.cambiarInicioDeSesion(true);
-  }
+  };
 
   async handleChangePassword(e) {
     e.preventDefault();
 
-    if (!this.state.isDisabled && this.state.forgetUsername && this.state.forgetNewPassword && this.state.forgetNewConfirmPassword && this.state.forgetSecurityAnswer) {
-      const { forgetUsername, forgetNewPassword, forgetNewConfirmPassword, forgetSecurityAnswer } = this.state;
+    const { forgetUsername, forgetNewPassword, forgetSecurityAnswer } =
+      this.state;
 
-      if (forgetNewConfirmPassword !== forgetNewPassword) {
-        return this.setState({ showSmallAlert: true });
-      }
-
+    if (forgetUsername && forgetNewPassword && forgetSecurityAnswer) {
       const body = {
         security_answer: forgetSecurityAnswer,
         password: forgetNewPassword,
       };
 
       try {
-        await axios.put(`http://localhost:3001/users/change_password?_username=${forgetUsername}`, body);
+        await axios.put(
+          `http://localhost:3000/users/change_password/${forgetUsername}`,
+          body
+        );
+
         this.setState({ showSmallAlert: false });
-        return window.location.pathname = '/inicio-sesion'
+        window.location.pathname = "/inicio-sesion";
       } catch (error) {
         this.setState({ showSmallAlert: true });
       }
@@ -103,7 +107,7 @@ class ForgetForm extends Component {
           }}
         >
           {this.state.forgetUsernameFormatError && (
-            <SmallAlert message="Invalid Usuario" variant="info" />
+            <SmallAlert message="Usuario inválido" variant="info" />
           )}
           <div className="login-form-input-space">
             <input
@@ -115,7 +119,7 @@ class ForgetForm extends Component {
                 this.handleForgetUsername(e);
               }}
               className="login-form-input"
-              disabled={this.state.isDisabled} 
+              disabled={this.state.isDisabled}
             />
           </div>
           <div className="login-form-input-space">
@@ -146,7 +150,9 @@ class ForgetForm extends Component {
           </div>
           {this.state.securityQuestion && (
             <div className="security-question">
-              <p style={{ textAlign: 'center', marginTop: '10px' }}>{this.state.securityQuestion}</p>
+              <p style={{ textAlign: "center", marginTop: "10px" }}>
+                {this.state.securityQuestion}
+              </p>
             </div>
           )}
           <div className="login-form-input-space">
@@ -167,14 +173,21 @@ class ForgetForm extends Component {
             className="login-submit-button"
             disabled={this.state.isDisabled}
             type="submit"
-            style={{ marginBottom: '-10px' }}
+            style={{ marginBottom: "-10px" }}
           >
             Cambiar contraseña
           </Button>
         </form>
 
         {this.state.showSmallAlert && (
-          <SmallAlert message="Ha ocurrido un problema" variant="danger" />
+          <SmallAlert
+            message={
+              this.state.isPasswordCorrect
+                ? "Ha ocurrido un problema"
+                : "La nueva contraseña no puede ser igual a la anterior"
+            }
+            variant="danger"
+          />
         )}
       </div>
     );
