@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import SmallAlert from "../../SmallAlert.jsx";
 import store from "../../../InteriorDesignStore.js";
+import { debounce } from "lodash";
 
 @inject("store")
 @observer
@@ -27,7 +28,10 @@ class ForgetForm extends Component {
       showSmallAlert: false, // Mostrar alerta pequeña
     };
 
-    this.handleForgetUsername = this.handleForgetUsername.bind(this);
+    this.handleForgetUsername = debounce(
+      this.handleForgetUsername.bind(this),
+      500
+    );
     this.handleForgetNewPassword = this.handleForgetNewPassword.bind(this);
     this.handleForgetNewConfirmPassword =
       this.handleForgetNewConfirmPassword.bind(this);
@@ -35,23 +39,48 @@ class ForgetForm extends Component {
       this.handleForgetSecurityAnswer.bind(this);
   }
 
-  async handleForgetUsername(e) {
-    const username = e.target.value;
+  async handleForgetUsername(username) {
     this.setState({ forgetUsername: username });
 
-    try {
-      await axios.get(`http://localhost:3000/users/question/${username}`);
+    if (username.length === 0) {
+      // Si el campo está vacío, no hacer la solicitud
+      this.setState({
+        securityQuestion: "",
+        isDisabled: true,
+        isError: false,
+      });
+      return;
+    }
 
-      if (response.status === 200 && response.data.question) {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/users/question/${username}`
+      );
+
+      if (
+        response.status === 200 &&
+        typeof response.data.question === "string" &&
+        response.data.question.length > 0
+      ) {
+        console.log("Pregunta de seguridad recibida:", response.data.question);
         this.setState({
           securityQuestion: response.data.question,
           isDisabled: false,
+          isError: false,
+        });
+      } else {
+        this.setState({
+          securityQuestion: "Pregunta de seguridad no válida.",
+          isDisabled: true,
+          isError: true,
         });
       }
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        this.setState({ isDisabled: false });
-      }
+      this.setState({
+        securityQuestion: "Pregunta de seguridad no encontrada.",
+        isDisabled: true,
+        isError: true,
+      });
     }
   }
 
@@ -111,6 +140,7 @@ class ForgetForm extends Component {
       }
     }
   }
+
   render() {
     return (
       <div className="vertical-container">
@@ -130,7 +160,9 @@ class ForgetForm extends Component {
               type="text"
               value={this.state.forgetUsername}
               onChange={(e) => {
-                this.handleForgetUsername(e);
+                const username = e.target.value;
+                this.setState({ forgetUsername: username }); // Actualiza el estado inmediatamente
+                this.handleForgetUsername(username); // Llama a la función con debounce
               }}
               className="login-form-input"
               disabled={this.state.isDisabled}

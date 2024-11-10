@@ -3027,7 +3027,9 @@ var Polygon = require('polygon')
                         geometry: geometry,
                         materials: materials
                     });
-
+                    console.log('itemType:', itemType);
+                    console.log('Clase obtenida:', BP3D.Items.Factory.getClass(itemType));
+                    
                 };
 
                 function addToMaterials(materials, newmaterial) {

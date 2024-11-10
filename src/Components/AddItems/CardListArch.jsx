@@ -49,10 +49,19 @@ class CardListArch extends Component {
           Promise.all(
             itemListTemp.map(async (modelId) => {
               let res = await axios.get(BASE_URL + MODELS + FIND + modelId);
-              let temp = [...this.state.itemList];
-              temp.push(res.data);
-              this.setState({ itemList: temp });
-              return res.data;
+              let model = res.data;
+
+              // Filtra los modelos de Balcony Railing
+              if (
+                model.name !== "Balcony Railing" &&
+                model.name !== "Balcony Railing 2"
+              ) {
+                let temp = [...this.state.itemList];
+                temp.push(model);
+                this.setState({ itemList: temp });
+              }
+
+              return model;
             })
           );
         });
@@ -70,10 +79,19 @@ class CardListArch extends Component {
           Promise.all(
             itemListTemp.map(async (modelId) => {
               let res = await axios.get(BASE_URL + MODELS + FIND + modelId);
-              let temp = [...this.state.itemList];
-              temp.push(res.data);
-              this.setState({ itemList: temp });
-              return res.data;
+              let model = res.data;
+
+              // Filtra los modelos de Balcony Railing
+              if (
+                model.name !== "Balcony Railing" &&
+                model.name !== "Balcony Railing 2"
+              ) {
+                let temp = [...this.state.itemList];
+                temp.push(model);
+                this.setState({ itemList: temp });
+              }
+
+              return model;
             })
           );
         });
@@ -85,12 +103,18 @@ class CardListArch extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapShot) {
-    if (this.props.store.obtenerInicioDeSesion && prevState.isLoggedIn === false) {
+    if (
+      this.props.store.obtenerInicioDeSesion &&
+      prevState.isLoggedIn === false
+    ) {
       this.setState({ isLoggedIn: true });
       this.clearList();
       this.getUserList();
     }
-    if (this.props.store.obtenerInicioDeSesion === false && prevState.isLoggedIn) {
+    if (
+      this.props.store.obtenerInicioDeSesion === false &&
+      prevState.isLoggedIn
+    ) {
       this.setState({ isLoggedIn: false });
       this.clearList();
       this.getFreeList();
