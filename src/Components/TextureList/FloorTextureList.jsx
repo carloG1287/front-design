@@ -215,7 +215,7 @@ class FloorTextureList extends Component {
             }}
             style={{ float: "right", marginBottom: "10px" }}
           >
-            Cerrar
+            X
           </button>
         </div>
         <hr className="small-underline" />
