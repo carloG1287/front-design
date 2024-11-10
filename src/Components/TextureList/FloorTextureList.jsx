@@ -34,8 +34,12 @@ class FloorTextureList extends Component {
 
   // Manejador para actualizar el tipo de suelo seleccionado
   handleTextureSelection = (textureName) => {
-    this.setState({ selectedFloorTexture: textureName });
-    this.props.store.setFloorTexture(textureName); // Guardamos la textura seleccionada en el store
+    // Actualiza directamente el store si es necesario
+    this.props.store.setFloorTexture(textureName);
+    // Solo actualiza el estado local si realmente lo necesitas para el componente
+    if (this.state.selectedFloorTexture !== textureName) {
+      this.setState({ selectedFloorTexture: textureName });
+    }
   };
 
   clearList() {
@@ -221,17 +225,17 @@ class FloorTextureList extends Component {
         <hr className="small-underline" />
         <div className="texture-panel-heading">Madera</div>
         <TextureList
-          textureList={this.state.textureListWood.reverse()}
+          textureList={this.state.textureListWood}
           onSelectTexture={this.handleTextureSelection}
         />
         <div className="texture-panel-heading">Mármol</div>
         <TextureList
-          textureList={this.state.textureListMarble.reverse()}
+          textureList={this.state.textureListMarble}
           onSelectTexture={this.handleTextureSelection}
         />
         <div className="texture-panel-heading">Baldosas</div>
         <TextureList
-          textureList={this.state.textureListTile.reverse()}
+          textureList={this.state.textureListTile}
           onSelectTexture={this.handleTextureSelection}
         />
       </div>
