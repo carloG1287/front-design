@@ -31,6 +31,7 @@ class FloorTextureList extends Component {
     this.getFreeList = this.getFreeList.bind(this);
     this.clearList = this.clearList.bind(this);
   }
+
   // Manejador para actualizar el tipo de suelo seleccionado
   handleTextureSelection = (textureName) => {
     this.setState({ selectedFloorTexture: textureName });
@@ -205,7 +206,18 @@ class FloorTextureList extends Component {
   render() {
     return (
       <div className="texture-panel">
-        <div className="panel-heading">Ajustar piso</div>
+        <div className="panel-heading">
+          Ajustar piso
+          <button
+            onClick={() => {
+              console.log("Cerrando FloorTextureList");
+              this.props.onClose();
+            }}
+            style={{ float: "right", marginBottom: "10px" }}
+          >
+            Cerrar
+          </button>
+        </div>
         <hr className="small-underline" />
         <div className="texture-panel-heading">Madera</div>
         <TextureList

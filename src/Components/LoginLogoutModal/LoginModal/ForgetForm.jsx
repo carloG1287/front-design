@@ -92,11 +92,25 @@ class ForgetForm extends Component {
         this.setState({ showSmallAlert: false });
         window.location.pathname = "/inicio-sesion";
       } catch (error) {
-        this.setState({ showSmallAlert: true });
+        // Actualiza el estado con el mensaje de error específico
+        let errorMessage = "Ha ocurrido un problema"; // Mensaje por defecto
+
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          // Usa el mensaje del backend si está disponible
+          errorMessage = error.response.data.message;
+        }
+
+        this.setState({
+          showSmallAlert: true,
+          smallAlertMessage: errorMessage,
+        });
       }
     }
   }
-
   render() {
     return (
       <div className="vertical-container">
@@ -181,11 +195,7 @@ class ForgetForm extends Component {
 
         {this.state.showSmallAlert && (
           <SmallAlert
-            message={
-              this.state.isPasswordCorrect
-                ? "Ha ocurrido un problema"
-                : "La nueva contraseña no puede ser igual a la anterior"
-            }
+            message={this.state.smallAlertMessage} // Muestra el mensaje específico
             variant="danger"
           />
         )}

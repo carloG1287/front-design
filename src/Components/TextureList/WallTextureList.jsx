@@ -186,7 +186,16 @@ class WallTextureList extends Component {
   render() {
     return (
       <div className="texture-panel">
-        <div className="panel-heading">Ajustar pared</div>
+        <div className="panel-heading">
+          Ajustar pared
+          <button
+            onClick={this.props.onClose}
+            className="close-button"
+            style={{ float: "right" }}
+          >
+            X
+          </button>
+        </div>
         <hr className="small-underline" />
         <div className="texture-panel-heading">Patrones</div>
         <TextureList

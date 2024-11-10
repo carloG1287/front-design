@@ -53,6 +53,8 @@ class AppContenido extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showWallTextureList: false,
+      showFloorTextureList: false,
       key: "chair",
       blueprint3d: {},
       añadirManejadorDeClick: false,
@@ -75,9 +77,31 @@ class AppContenido extends Component {
     this.handleModalRepeat = this.handleModalRepeat.bind(this);
     this.handleModalInfo = this.handleModalInfo.bind(this);
     this.generateReport = this.generateReport.bind(this);
+    this.closeWallTextureList = this.closeWallTextureList.bind(this);
+    this.showFloorTextureList = this.showFloorTextureList.bind(this);
+    this.closeFloorTextureList = this.closeFloorTextureList.bind(this);
   }
   async componentDidMount() {
     await this.fetchAuthenticatedUser();
+  }
+
+  // Métodos para mostrar y cerrar listas de texturas
+  showFloorTextureList() {
+    console.log("Mostrando FloorTextureList");
+    this.setState({ showFloorTextureList: true });
+  }
+
+  closeFloorTextureList() {
+    console.log("No Mostrando FloorTextureList");
+    this.setState({ showFloorTextureList: false });
+  }
+
+  showWallTextureList() {
+    this.setState({ showWallTextureList: true });
+  }
+
+  closeWallTextureList() {
+    this.setState({ showWallTextureList: false });
   }
 
   fetchAuthenticatedUser = async () => {
@@ -152,17 +176,17 @@ class AppContenido extends Component {
 
     // Cantidad de Objetos en el Canvas
     const objectCounts = {
-      chairs: 0,
-      tables: 0,
-      desks: 0,
-      sofas: 0,
-      lamps: 0,
-      shelves: 0,
-      plants: 0,
-      rugs: 0,
-      architecturalElements: 0,
-      officeFurniture: 0,
-      others: 0,
+      sillas: 0,
+      mesas: 0,
+      escritorios: 0,
+      sofás: 0,
+      lámparas: 0,
+      estantes: 0,
+      plantas: 0,
+      alfombras: 0,
+      elementosArquitectónicos: 0,
+      mobiliarioDeOficina: 0,
+      otros: 0,
     };
 
     // Acceso al tipo de piso y pared
@@ -759,6 +783,7 @@ class AppContenido extends Component {
       // sideMenu.stateChangeCallbacks.add(reset);
       three.wallClicked.add(initTextureSelectors);
       initTextureSelectors();
+      three.wallClicked.add(wallClicked);
     }
 
     function wallClicked(halfEdge) {
@@ -771,7 +796,11 @@ class AppContenido extends Component {
       $("texture-context-container").show();
       $("#wallTextures").show();
       initTextureSelectors();
+      this.setState({ showWallTextureList: true });
     }
+
+    // eslint-disable-next-line no-func-assign
+    wallClicked = wallClicked.bind(this);
 
     function floorClicked(room) {
       if (currentTarget !== undefined && currentTarget !== null) {
@@ -779,12 +808,14 @@ class AppContenido extends Component {
       }
       currentTarget = room;
       currentTarget.drawOutline();
+      this.showFloorTextureList();
       $("#wallTextures").hide();
       $("texture-context-container").show();
       $("#floorTexturesDiv").show();
       initTextureSelectors();
     }
-
+    // eslint-disable-next-line no-func-assign
+    floorClicked = floorClicked.bind(this);
     function reset() {
       // if (currentTarget !== undefined && currentTarget !== null) {
       //   currentTarget.removeOutline();
@@ -1008,9 +1039,9 @@ class AppContenido extends Component {
     }
   }
 
+  // eslint-disable-next-line no-dupe-class-members
   componentDidMount() {
-    // const { store } = this.props;
-    var opts = {
+    const opts = {
       floorplannerElement: "floorplanner-canvas",
       threeElement: "#viewer",
       threeCanvasElement: "three-canvas",
@@ -1018,11 +1049,7 @@ class AppContenido extends Component {
       widget: false,
     };
     this.setState({ blueprint3d: new BP3D.Blueprint3d(opts) }, () => {
-      if (
-        this.props.viewKey !== undefined &&
-        this.props.viewKey !== null &&
-        this.props.viewKey !== ""
-      ) {
+      if (this.props.viewKey) {
         this.engine(this.props.viewKey);
       } else {
         this.engine("");
@@ -1077,6 +1104,10 @@ class AppContenido extends Component {
   }
 
   render() {
+    console.log(
+      "Renderizando AppContenido. showFloorTextureList:",
+      this.state.showFloorTextureList
+    );
     const { store } = this.props;
     return (
       <div className="horizontal-container">
@@ -1088,18 +1119,24 @@ class AppContenido extends Component {
             <ContextMenu />
           </div>
           {/* Floor Textures */}
-          <div id="floorTexturesDiv" style={{ display: "none" }}>
-            <FloorTextureList
-              usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
-            />
-          </div>
+          {this.state.showFloorTextureList && (
+            <div id="floorTexturesDiv">
+              <FloorTextureList
+                onClose={this.closeFloorTextureList}
+                usuarioHaIniciadoSesion={this.props.store.obtenerInicioDeSesion}
+              />
+            </div>
+          )}
 
           {/* Wall Textures */}
-          <div id="wallTextures" style={{ display: "none" }}>
-            <WallTextureList
-              usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
-            />
-          </div>
+          {this.state.showWallTextureList && (
+            <div id="wallTextures">
+              <WallTextureList
+                onClose={this.closeWallTextureList}
+                usuarioHaIniciadoSesion={store.obtenerInicioDeSesion}
+              />
+            </div>
+          )}
         </div>
         {/* End Left Column */}
 
@@ -1187,7 +1224,7 @@ class AppContenido extends Component {
                 <span className="icon-centre">
                   <FaArrowsAlt />
                 </span>
-                <span className="text-centre">Move Walls</span>
+                <span className="text-centre">Mover Muros</span>
               </Button>
               <Button
                 variant="info"
@@ -1198,18 +1235,18 @@ class AppContenido extends Component {
                 <span className="icon-centre">
                   <FaPencilAlt />
                 </span>
-                <span className="text-centre">Draw Walls</span>
+                <span className="text-centre">Dibujar Muros</span>
               </Button>
               <Button
                 variant="info"
                 size="sm"
                 className="icon-text-button"
-                id="update-floorplan"
+                id="delete"
               >
                 <span className="icon-centre">
                   <FaTrashAlt />
                 </span>
-                <span className="text-centre">Delete Walls</span>
+                <span className="text-centre">Borrar Muros</span>
               </Button>
 
               <Button
