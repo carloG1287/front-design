@@ -34,8 +34,9 @@ class FloorTextureList extends Component {
 
   // Manejador para actualizar el tipo de suelo seleccionado
   handleTextureSelection = (textureName) => {
-    // Actualiza directamente el store si es necesario
-    this.props.store.setFloorTexture(textureName);
+    // Añadir la textura seleccionada al store
+    this.props.store.addFloorTexture(textureName);
+
     // Solo actualiza el estado local si realmente lo necesitas para el componente
     if (this.state.selectedFloorTexture !== textureName) {
       this.setState({ selectedFloorTexture: textureName });

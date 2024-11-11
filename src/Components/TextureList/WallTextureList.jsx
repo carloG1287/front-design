@@ -33,7 +33,7 @@ class WallTextureList extends Component {
 
   // Manejador para actualizar la textura de pared seleccionada en el store
   handleTextureSelection = (textureName) => {
-    this.props.store.setWallTexture(textureName); // Guardamos la textura seleccionada en el store
+    this.props.store.addWallTexture(textureName); // Guardamos la textura seleccionada en el store
   };
 
   clearList() {

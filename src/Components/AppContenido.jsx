@@ -167,6 +167,14 @@ class AppContenido extends Component {
 
   generateReport = () => {
     // Información General del Reporte
+    // Filtrar texturas de pisos y paredes antes de generar el reporte
+    const uniqueFloorTextures = [
+      ...new Set(this.props.store.obtenerFloorTextures),
+    ];
+    const uniqueWallTextures = [
+      ...new Set(this.props.store.obtenerWallTextures),
+    ];
+
     const softwareName = "Office Interior Design";
     const userName =
       this.props.store.obtenerNombreDeUsuario || "[Nombre no disponible]";
@@ -189,11 +197,16 @@ class AppContenido extends Component {
       otros: 0,
     };
 
-    // Acceso al tipo de piso y pared
-    const floorType =
-      this.props.store.obtenerFloorTexture || "[Tipo de piso no disponible]";
-    const wallType =
-      this.props.store.obtenerWallTexture || "[Tipo de pared no disponible]";
+    // Acceso a los tipos de pisos y paredes (ahora soportando múltiples texturas)
+    const floorTextures =
+      this.props.store.obtenerFloorTextures.length > 0
+        ? this.props.store.obtenerFloorTextures
+        : ["[Tipo de piso no disponible]"];
+
+    const wallTextures =
+      this.props.store.obtenerWallTextures.length > 0
+        ? this.props.store.obtenerWallTextures
+        : ["[Tipo de pared no disponible]"];
 
     // Mapear tipos numéricos a categorías
     const typeMapping = {
@@ -283,7 +296,7 @@ class AppContenido extends Component {
         const category = typeMapping[itemType];
         objectCounts[category]++;
       } else {
-        objectCounts.others++;
+        objectCounts.otros++;
         unmappedTypes.add(itemType);
       }
     });
@@ -306,6 +319,7 @@ class AppContenido extends Component {
     doc.text(`Nombre de Usuario: ${userName}`, 10, 30);
     doc.text(`Correo Electrónico: ${userEmail}`, 10, 40);
 
+    // Resumen de Objetos en el Canvas
     doc.text("Resumen de Objetos en el Canvas:", 10, 50);
     let yPosition = 60;
     Object.keys(objectCounts).forEach((key) => {
@@ -313,14 +327,31 @@ class AppContenido extends Component {
       yPosition += 10;
     });
 
-    doc.text(`Dimensiones del Área: ${dimensions}`, 10, yPosition + 10);
-    doc.text(`Tipo de Piso: ${floorType}`, 10, yPosition + 20);
-    doc.text(`Tipo de Pared: ${wallType}`, 10, yPosition + 30);
-    doc.text(
-      `Total de Materiales Utilizados: ${materialsUsed}`,
-      10,
-      yPosition + 40
-    );
+    // Dimensiones del Área
+    doc.text(`Dimensiones del Área: ${dimensions}`, 10, yPosition);
+    yPosition += 15; // Espacio después de las dimensiones
+
+    // Tipos de Pisos Utilizados
+    doc.text("Tipos de Pisos Utilizados:", 10, yPosition);
+    yPosition += 10;
+    uniqueFloorTextures.forEach((floorTexture) => {
+      doc.text(`- ${floorTexture}`, 10, yPosition);
+      yPosition += 10;
+    });
+    yPosition += 10; // Espacio adicional después de esta sección
+
+    // Tipos de Paredes Utilizadas
+    doc.text("Tipos de Paredes Utilizadas:", 10, yPosition);
+    yPosition += 10;
+    uniqueWallTextures.forEach((wallTexture) => {
+      doc.text(`- ${wallTexture}`, 10, yPosition);
+      yPosition += 10;
+    });
+    yPosition += 3; // Espacio adicional después de esta sección
+
+    // Materiales utilizados y otros detalles
+    yPosition += 10;
+    doc.text(`Total de Materiales Utilizados: ${materialsUsed}`, 10, yPosition);
 
     // Descargar el PDF
     doc.save("reporte_diseño.pdf");
